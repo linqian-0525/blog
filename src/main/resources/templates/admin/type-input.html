@@ -41,8 +41,8 @@
 		<div class="ui attached pointing menu">
 			<div class="ui container">
 				<div class="right menu">
-				  <a href="#" class="active teal item">发布</a>
-			      <a href="#" class="item">列表</a>
+                    <a href="#" th:href="@{/admin/types/input}" class="active teal item">新增</a>
+                    <a href="#" th:href="@{/admin/types}" class="teal item">列表</a>
 				</div>
 			</div>
 			
@@ -50,19 +50,26 @@
 		<!--中间内容-->
 	   <div class="m-container-small m-padded-tb-big">
 			<div class="ui container">
-				<form action="#" method="post" class="ui form">
-
-			     <div class="field">
+				<form action="#" method="post"  class="ui form" th:object="${type}"
+                      th:action="*{id}==null ? @{/admin/types} : @{/admin/types/{id}(id=*{id})}">
+                <input type="hidden" name="id" th:value="*{id}">
+			     <div class="required field">
 			     	<div class="ui left labeled input">
 			     		<label class="ui teal basic label">名称</label>
-			     		<input type="text" name="name" placeholder="分类名称" />
+			     		<input type="text" name="name" placeholder="分类名称" th:value="*{name}"/>
 			     	</div>
 			     </div>
-
           	     <div class="ui error message"></div>
+					<!--/*/
+                    <div class="ui negative message" th:if="${#fields.hasErrors('name')}"  >
+					  <i class="close icon"></i>
+					  <div class="header">验证失败</div>
+					  <p th:errors="*{name}">提交信息不符合规则</p>
+					</div>
+					 /*/-->
 			     <div class="ui right aligned container">
 			     	<button class="ui button" onclick="window.history.go(-1)">返回</button>
-			     	<button class="ui teal button">提交</button>
+			     	<button class="ui teal submit button">提交</button>
 			     </div>
 			     
 				</form>
@@ -130,17 +137,18 @@
 			.dropdown({
 				on : 'hover'
 			});
-			$('.ui.form').form({
+			$('.ui .form').form({
 				fields:{
 					title:{
-						indentifier:'title',
+						identifier:'name',
 						rules:[{
 							type:'empty',
-							prompt:'标题:请输入博客标题'
+							prompt:'请输入分类名称'
 						}]
 					}
 				}
 			});
+
 		</script>
 	</body>
 </html>

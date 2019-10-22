@@ -11,4 +11,10 @@
     *
     from type
   </select>
+  <select id="findByName"  resultMap="BaseResultMap">
+    select
+    *
+    from type
+    where name = #{name}
+  </select>
 </mapper>
