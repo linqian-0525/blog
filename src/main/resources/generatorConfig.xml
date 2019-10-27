@@ -35,5 +35,7 @@
         </table>
         <table schema="DB2ADMIN" tableName="tag" domainObjectName="Tag" >
         </table>
+        <table schema="DB2ADMIN" tableName="blogs" domainObjectName="Blog" >
+        </table>
     </context>
 </generatorConfiguration>

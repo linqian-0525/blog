@@ -21,8 +21,8 @@ public class TagController {
     @GetMapping("/tags")
     public String types(Model model,
                         @RequestParam(defaultValue = "1",value = "pageNum") Integer pageNum){
-        String orderBy = "id desc";
-        PageHelper.startPage(pageNum,5,orderBy);
+    //    String orderBy = "createtime desc";
+        PageHelper.startPage(pageNum,5);
         PageInfo<Tag> pageInfo = tagService.listType();
         model.addAttribute("pageInfo",pageInfo);
         return "admin/tags";

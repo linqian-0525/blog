@@ -6,11 +6,11 @@ import com.lq.blog.mapper.TagExtMapper;
 import com.lq.blog.mapper.TagMapper;
 import com.lq.blog.model.Tag;
 import com.lq.blog.model.TagExample;
-import com.lq.blog.model.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -54,5 +54,25 @@ public class TagService {
    @Transactional
     public void deleteType(Long id) {
         tagMapper.deleteByPrimaryKey(id);
+    }
+   public List<Tag> listTag(String ids){//123
+        List<Tag> list = new ArrayList<>();
+        int s = convertToList(ids).size();
+        List<Long> longs =  convertToList(ids);
+        for (int i =0;i<s;i++){
+            Tag tag  = getType(longs.get(i));
+            list.add(tag);
+        }
+        return list;
+    }
+    private List<Long> convertToList(String ids){
+        List<Long> list = new ArrayList<>();
+        if (!"".equals(ids) && ids != null){
+            String [] idarray = ids.split(",");
+            for (int i = 0 ;i<idarray.length;i++){
+                list.add(new Long(idarray[i]));
+            }
+        }
+        return list;
     }
 }
