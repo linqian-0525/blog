@@ -8,4 +8,7 @@ import java.util.List;
 public interface BlogExtMapper {
 
     List<Blog> list();
+
+    List<Blog> listBy();
+     Integer count();
 }

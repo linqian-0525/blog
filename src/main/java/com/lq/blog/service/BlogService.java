@@ -6,6 +6,7 @@ import com.lq.blog.dto.BlogDTO;
 import com.lq.blog.mapper.BlogExtMapper;
 import com.lq.blog.mapper.BlogMapper;
 import com.lq.blog.mapper.TypeMapper;
+import com.lq.blog.mapper.UserMapper;
 import com.lq.blog.model.Blog;
 import com.lq.blog.model.BlogExample;
 import com.lq.blog.model.Type;
@@ -27,6 +28,8 @@ public class BlogService {
     private BlogExtMapper blogExtMapper;
     @Autowired
     private TypeMapper typeMapper;
+    @Autowired
+    private UserMapper userMapper;
    public Blog getBlog(Long id){
      return blogMapper.selectByPrimaryKey(id);
     }
@@ -56,6 +59,7 @@ public class BlogService {
            BlogDTO blogDto = new BlogDTO();
            BeanUtils.copyProperties(blog,blogDto);
            blogDto.setType(typeMapper.selectByPrimaryKey(blogDTO.getTypeid()));
+           blogDTO.setUser(userMapper.selectByPrimaryKey(blog.getUserid()));
            dtoList.add(blogDto);
        }
        PageInfo<BlogDTO> pageInfo = new PageInfo<>(dtoList);
@@ -72,6 +76,8 @@ public class BlogService {
            blog.setUserid(blogDTO.getUser().getId());
            blog.setTypeid(blogDTO.getType().getId());
            blog.setFlags(blogDTO.getFlags());
+           blog.setDescription(blogDTO.getDescription());
+           blog.setTagIds(blogDTO.getTagIds());
            return blogMapper.insert(blog);
        }
           else {
@@ -85,7 +91,9 @@ public class BlogService {
               blog.setSharestatement(blogDTO.isSharestatement());
               blog.setRecommend(blogDTO.isRecommend());
               blog.setFlags(blogDTO.getFlags());
+              blog.setDescription(blogDTO.getDescription());
               blog.setUpdatetime(new Date());
+              blog.setTagIds(blogDTO.getTagIds());
               return blogMapper.updateByPrimaryKeySelective(blog);
        }
     }
@@ -100,6 +108,7 @@ public class BlogService {
            BlogDTO blogDTO = new BlogDTO();
            BeanUtils.copyProperties(blog,blogDTO);
            Type type = typeMapper.selectByPrimaryKey(blog.getTypeid());
+           blogDTO.setUser(userMapper.selectByPrimaryKey(blog.getUserid()));
            blogDTO.setType(type);
            list.add(blogDTO);
        }
@@ -117,8 +126,15 @@ public class BlogService {
        blogDTO.setFlags(blog.getFlags());
        blogDTO.setFirstpicture(blog.getFirstpicture());
        blogDTO.setAppreciation(blog.getAppreciation());
+       blogDTO.setTagIds(blog.getTagIds());
+       blogDTO.setUser(userMapper.selectByPrimaryKey(blog.getUserid()));
        BeanUtils.copyProperties(blog,blogDTO);
         blogDTO.init();
        return blogDTO;
+    }
+
+    public PageInfo<Blog> list() {
+      List<Blog>  blog = blogExtMapper.listBy();
+      return new PageInfo<>(blog);
     }
 }

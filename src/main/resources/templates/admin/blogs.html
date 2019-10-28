@@ -100,7 +100,7 @@
                             <th th:text="${#dates.format(blog.createtime,'yyyy-MM-dd')}">更新时间</th>
                             <td>
                                 <a href="#" th:href="@{/admin/blogs/{id}/input(id=${blog.id})}" class="ui mini teal basic button">编辑</a>
-                                <a href="#" th:href="@{/admin/blogs/{id}/delete(id=${blog.id})}" class="ui mini red basic button">删除</a>
+                                <a href="#" th:onclick="'javascript:deleteUser('+${blog.id}+')' " class="ui mini red basic button">删除</a>
                             </td>
                         </tr>
                         </tbody>
@@ -171,6 +171,14 @@
 		<!--/*/</th:block>/*/-->
 
 		<script type="application/javascript">
+            function deleteUser(id) {
+                if (confirm("确认删除该博客吗!")) {
+                    var url="/admin/blogs/"+ id +"/delete";
+                    top.location.href=url;
+                } else {
+                    location.reload();
+                }
+            }
 			$('.menu.toggle').click(function(){
 				$('.m-item').toggleClass('m-mobile-hide');
 			});

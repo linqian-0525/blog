@@ -88,8 +88,12 @@
     <script src="../../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.min.js}"></script>
     <script>
         $('#out').click(function () {
-            alert("确认退出吗？");
-            top.location.href="/admin";
+            if (confirm("确认退出登录吗!")) {
+                top.location.href="/admin";
+            } else {
+                location.reload();
+            }
+
         });
     </script>
 </th:block>

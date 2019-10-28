@@ -117,6 +117,9 @@
 			     		<input type="text" name="firstpicture" th:value="*{firstpicture}" placeholder="首图引用地址" />
 			     	</div>
 			     </div>
+					<div class="required field">
+						<textarea name="description" th:text="*{description}" placeholder="博客描述..." maxlength="200"></textarea>
+					</div>
 			     <div class="inline fields">
 			     	<div class="field">
 			     		<div class="ui checkbox">
@@ -225,29 +228,37 @@
             $('#blog-form').submit();
         });
 			$('.ui.form').form({
-				fields:{
-					title:{
-						identifier:'title',
-						rules:[{
-							type:'empty',
-							prompt:'标题:请输入博客标题'
-						}]
-					},
-                    content:{
-                        identifier:'content',
-                        rules:[{
-                            type:'empty',
-                            prompt:'标题:请输入博客内容'
+				fields: {
+                    title: {
+                        identifier: 'title',
+                        rules: [{
+                            type: 'empty',
+                            prompt: '标题:请输入博客标题'
                         }]
                     },
-                    firstpicture:{
-                        identifier:'firstpicture',
-                        rules:[{
-                            type:'empty',
-                            prompt:'标题:请输入图片地址'
+                    content: {
+                        identifier: 'content',
+                        rules: [{
+                            type: 'empty',
+                            prompt: '标题:请输入博客内容'
+                        }]
+                    },
+                    firstpicture: {
+                        identifier: 'firstpicture',
+                        rules: [{
+                            type: 'empty',
+                            prompt: '标题:请输入图片地址'
+                        }]
+
+                    },
+                    description : {
+                        identifier: 'description',
+                        rules: [{
+                            type : 'empty',
+                            prompt: '标题：请输入博客描述'
                         }]
                     }
-				}
+                }
 			});
 		</script>
 	</body>

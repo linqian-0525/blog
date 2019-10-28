@@ -69,7 +69,7 @@
 							<td th:text="${tag.name}"></td>
 						    <td>
 						    	<a href="#" th:href="@{/admin/tags/{id}/input(id=${tag.id})}" class="ui mini teal basic button">编辑</a>
-						    	<a href="#" th:href="@{/admin/tags/{id}/delete(id=${tag.id})}" class="ui mini red basic button">删除</a>
+						    	<a href="#"  class="ui mini red basic button"  th:onclick="'javascript:deleteUser('+${tag.id}+')' ">删除</a>
 						    </td>
 						</tr>
 					</tbody>
@@ -132,6 +132,14 @@
 		<!--/*/</th:block>/*/-->
 
 		<script type="application/javascript">
+            function deleteUser(id) {
+                if (confirm("确认删除标签吗!")) {
+                    var url="/admin/tags/"+ id +"/delete";
+					top.location.href=url;
+                } else {
+                    location.reload();
+                }
+            }
 			$('.menu.toggle').click(function(){
 				$('.m-item').toggleClass('m-mobile-hide');
 			});

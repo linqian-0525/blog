@@ -40,10 +40,10 @@ public class BlogController {
         PageHelper.startPage(page,5,oderby);
         PageInfo<BlogDTO> pageInfo =  blogService.listType();
         if (page!=1){
-            pageInfo.setFirstPage(page-1);
+            pageInfo.setPrePage(page-1);
         }
         pageInfo.setNextPage(page+1);
-        pageInfo.setPages(10);
+        pageInfo.setPages(blogExtMapper.count()/5+1);
         model.addAttribute("page",pageInfo);
         model.addAttribute("types",typeExtMapper.list());
         return "admin/blogs";

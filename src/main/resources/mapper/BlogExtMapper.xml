@@ -28,4 +28,15 @@
     *
     from blogs
   </select>
+  <select id="listBy"  resultMap="BaseResultMap">
+    select
+    *
+    from blogs
+    where recommend=true
+  </select>
+  <select id="count"  resultType="java.lang.Integer">
+    select
+    count(*)
+    from blogs
+  </select>
 </mapper>
