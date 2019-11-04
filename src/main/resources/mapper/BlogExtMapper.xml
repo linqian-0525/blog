@@ -39,4 +39,15 @@
     count(*)
     from blogs
   </select>
+  <select id="listByQuery"  resultMap="BaseResultMap">
+    select
+    *
+    from blogs b
+    where b.title like  #{query} or b.content like #{query}
+  </select>
+  <update id="updateView" parameterType="com.lq.blog.model.Blog">
+    update blogs
+    set view = view + #{view,jdbcType=BIGINT}
+     where id = #{id}
+  </update>
 </mapper>

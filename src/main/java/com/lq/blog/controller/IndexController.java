@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -48,8 +50,27 @@ public class IndexController {
             model.addAttribute("recommendBlogs",blogService.list());
             return "index";
     }
-    @GetMapping("/blog")
-    public String blog(){
+    @GetMapping("/blog/{id}")
+    public String blog(@PathVariable Long id,Model model){
+        model.addAttribute("blog",blogService.getAndConvert(id));
         return "blog";
+    }
+
+    @PostMapping("/search")
+    public String search( Model model,
+                         @RequestParam String query,
+                         @RequestParam(defaultValue = "1",value = "page") Integer page) {
+        PageHelper.startPage(page,6);
+        PageInfo<BlogDTO> pageInfo =  blogService.listBlogQuery("%"+query+"%");
+        if (page!=1){
+            pageInfo.setPrePage(page-1);
+        }
+        pageInfo.setNextPage(page+1);
+        pageInfo.setPages(3);
+        Long i =pageInfo.getTotal();
+        model.addAttribute("query",query);
+        model.addAttribute("page",pageInfo);
+        model.addAttribute("size",i);
+    return "search";
     }
 }

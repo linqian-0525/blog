@@ -9,7 +9,9 @@ import com.lq.blog.mapper.TypeMapper;
 import com.lq.blog.mapper.UserMapper;
 import com.lq.blog.model.Blog;
 import com.lq.blog.model.BlogExample;
+import com.lq.blog.model.Tag;
 import com.lq.blog.model.Type;
+import com.lq.blog.util.MarkdownUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,8 @@ public class BlogService {
     private TypeMapper typeMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private TagService tagService;
    public Blog getBlog(Long id){
      return blogMapper.selectByPrimaryKey(id);
     }
@@ -78,6 +82,7 @@ public class BlogService {
            blog.setFlags(blogDTO.getFlags());
            blog.setDescription(blogDTO.getDescription());
            blog.setTagIds(blogDTO.getTagIds());
+           blog.setPublish(blogDTO.isPublish());
            return blogMapper.insert(blog);
        }
           else {
@@ -93,6 +98,7 @@ public class BlogService {
               blog.setFlags(blogDTO.getFlags());
               blog.setDescription(blogDTO.getDescription());
               blog.setUpdatetime(new Date());
+               blog.setPublish(blogDTO.isPublish());
               blog.setTagIds(blogDTO.getTagIds());
               return blogMapper.updateByPrimaryKeySelective(blog);
        }
@@ -119,7 +125,7 @@ public class BlogService {
     public BlogDTO getBlogDto(Long id) {
        Blog blog = getBlog(id);
        BlogDTO blogDTO = new BlogDTO();
-
+        BeanUtils.copyProperties(blog,blogDTO);
        blogDTO.setTitle(blog.getTitle());
        blogDTO.setContent(blog.getContent());
        blogDTO.setType(typeMapper.selectByPrimaryKey(blog.getTypeid()));
@@ -128,7 +134,9 @@ public class BlogService {
        blogDTO.setAppreciation(blog.getAppreciation());
        blogDTO.setTagIds(blog.getTagIds());
        blogDTO.setUser(userMapper.selectByPrimaryKey(blog.getUserid()));
-       BeanUtils.copyProperties(blog,blogDTO);
+       blogDTO.setTags(getTags(blog.getTagIds()));
+       blogDTO.setPublish(blog.getPublish());
+
         blogDTO.init();
        return blogDTO;
     }
@@ -136,5 +144,57 @@ public class BlogService {
     public PageInfo<Blog> list() {
       List<Blog>  blog = blogExtMapper.listBy();
       return new PageInfo<>(blog);
+    }
+    public PageInfo<BlogDTO> listBlogQuery(String query) {
+        List<Blog>  blogs = blogExtMapper.listByQuery(query);
+        List<BlogDTO> list = new ArrayList<>();
+        for (Blog blog : blogs){
+            BlogDTO blogDTO = new BlogDTO();
+            BeanUtils.copyProperties(blog,blogDTO);
+            Type type = typeMapper.selectByPrimaryKey(blog.getTypeid());
+            blogDTO.setUser(userMapper.selectByPrimaryKey(blog.getUserid()));
+            blogDTO.setType(type);
+            list.add(blogDTO);
+        }
+        PageInfo<BlogDTO> pageInfo = new PageInfo<>(list);
+        return pageInfo;
+   }
+   public List<Tag> getTags(String tagIds){
+       List<Tag> list = new ArrayList<>();
+       String str[] = StringUtils.split(tagIds,",");
+       for (int i =0;i<str.length;i++){
+           Tag tag = tagService.getType(Long.valueOf(str[i]));
+           if (tag != null){
+               list.add(tag);
+           }
+       }
+       return list;
+   }
+    public BlogDTO getAndConvert(Long id) {
+
+        Blog blog1 =  new Blog();
+        blog1.setId(id);
+        blog1.setView(1l);
+        blogExtMapper.updateView(blog1);
+        Blog blog = getBlog(id);
+        if (blog == null){
+            throw new NotFoundException("该博客不存在");
+        }
+        String content = blog.getContent();
+        BlogDTO blogDTO = new BlogDTO();
+        BeanUtils.copyProperties(blog,blogDTO);
+        blogDTO.setTitle(blog.getTitle());
+        blogDTO.setContent( MarkdownUtils.markdownToHtmlExtensions(content));
+        blogDTO.setType(typeMapper.selectByPrimaryKey(blog.getTypeid()));
+        blogDTO.setFlags(blog.getFlags());
+        blogDTO.setFirstpicture(blog.getFirstpicture());
+        blogDTO.setAppreciation(blog.getAppreciation());
+        blogDTO.setTagIds(blog.getTagIds());
+        blogDTO.setUpdatetime(blog.getUpdatetime());
+        blogDTO.setUser(userMapper.selectByPrimaryKey(blog.getUserid()));
+        blogDTO.setTags(getTags(blog.getTagIds()));
+        blogDTO.init();
+
+        return blogDTO;
     }
 }
