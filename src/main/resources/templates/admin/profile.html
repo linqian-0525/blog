@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="admin/_fragments :: head(~{::title})">>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<meta charset="utf-8" />
+	<title>修改个人信息</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+	<link rel="stylesheet" href="../../static/lib/editormd/css/editormd.min.css">
+	<link rel="stylesheet"  href="../../static/css/me.css"/>
+</head>
+
+<body>
+<!--导航-->
+<nav th:replace="admin/_fragments :: menu(1)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+	<div class="ui container" >
+		<div class="ui inverted secondary stackable menu">
+			<h2 class="ui teal header item">后台管理</h2>
+			<a href="#" class="active item m-mobile-hide"><i class="mini home icon"></i>博客</a>
+			<a href="#" class="m-item item  m-mobile-hide"><i class="mini idea icon"></i>分类</a>
+			<a href="#" class="m-item item  m-mobile-hide"><i class="mini tags icon"></i>标签</a>
+			<div class="right m-item m-mobile-hide menu">
+				<div class="ui dropdown item">
+					<div class="text">
+						<img class="ui avatar image" src="https://picsum.photos/id/1/100/100?image=129"/>
+						Victory_林
+					</div>
+					<i class="dropdown icon"></i>
+					<div class="menu">
+						<a href="#" class="item">注销</a>
+						<a href="#" class="item">修改密码</a>
+						<a href="#" class="item">修改个人信息</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+		<i class="sidebar icon"></i>
+	</a>
+</nav>
+
+<!--中间内容-->
+<div class="m-container-small m-padded-tb-big">
+		<div class="ui container">
+			<div class="ui middle aligned center aligned grid">
+				<form id="blog-form" action="#" method="post" th:action="@{/admin/blogs}" class="ui  form" style="max-width: 30em !important;">
+					<div class="field">
+						<div class="ui left labeled input">
+							<label class="ui teal basic label">用户名</label>
+							<input type="text" name="username" placeholder="用户名" th:value="${session.user.username}" th:readonly="true"/>
+						</div>
+					</div>
+					<div class="required field">
+						<div class="ui left labeled input">
+							<label class="ui teal basic label">昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</label>
+							<input type="text" name="nickname" placeholder="请输入昵称" />
+						</div>
+					</div>
+					<div class="required field">
+						<div class="ui left labeled input">
+							<label class="ui teal basic label">&nbsp;&nbsp;email&nbsp;</label>
+							<input type="text" name="email" placeholder="请输入邮箱" />
+						</div>
+					</div>
+					<div class="required field">
+						<div class="ui left labeled input">
+							<label class="ui teal basic label">头&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;像</label>
+							<input type="text" name="avatar" placeholder="请输入图片地址" />
+						</div>
+					</div>
+
+					<div class="ui error message"></div>
+					<div class="ui right aligned container">
+						<button type="button" class="ui button" onclick="window.history.go(-1)">返回</button>
+						<button type="button" class="ui teal button">修改</button>
+					</div>
+					<div class="ui error mini message"></div>
+					<div class="ui mini negative message"
+						 th:unless="${#strings.isEmpty(message)}" th:text="${message}">
+						用户名和密码错误
+					</div>
+				</form>
+			</div>
+		</div>
+</div>
+<br/>
+<br/>
+<br/>
+<br/><br/>
+<br/><br/>
+<br/>
+<br/>
+<br/>
+
+
+<!--底部footer-->
+<footer th:replace="admin/_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+	<div class="ui center aligned container">
+		<div class="ui inverted divided stackable grid">
+			<div class="three wide column">
+				<div class="ui inverted link list">
+					<img src="../../static/img/wechat.jpg" class="ui rounded image" alt="" style="width:110px"/>
+				</div>
+			</div>
+			<div class="three wide column">
+				<h4 class="ui inverted header m-text-thin m-text-spaced">最新博客</h4>
+				<div class="ui inverted link list">
+					<a href="#" class="item">用户故事(User Story)</a>
+					<a href="#" class="item">用户故事(User Story)</a>
+					<a href="#" class="item">用户故事(User Story)</a>
+				</div>
+			</div>
+			<div class="three wide column">
+				<h4 class="ui inverted header m-text-thin m-text-spaced">联系我</h4>
+				<div class="ui inverted link list">
+					<a href="#" class="item">Email:1027716017@QQ.com</a>
+					<a href="#" class="item">QQ:1027716017</a>
+				</div>
+			</div>
+			<div class="seven wide column">
+				<h4 class="ui inverted header m-text-thin m-text-spaced">Blog</h4>
+				<p class="m-text-thin m-text-spaced m-opacity-mini">这是我的个人博客，会分享关于编程、写作、思考相关的任何内容，希望可以给来这的人有所帮助</p>
+			</div>
+		</div>
+		<div class="ui inverted section divider"><br/><br/>
+			<p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2019 Blog Designed by LQ</p>
+		</div>
+	</div>
+
+</footer>
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="../../static/lib/editormd/editormd.min.js"></script>
+<script type="application/javascript"></script>
+<!--/*/</th:block>/*/-->
+<script>
+    //初始化MarkDown编译器
+    var contentEditor;
+
+    $(function() {
+        contentEditor = editormd("md-content", {
+            width   : "100%",
+            height  : 640,
+            syncScrolling : "single",
+            path    : "/lib/editormd/lib/"
+        });
+    });
+    $('.menu.toggle').click(function(){
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $('.ui.dropdown')
+        .dropdown({
+            on : 'hover'
+        });
+    $('#save-btn').click(function () {
+        $('[name="publish"]').val(false);
+        $('#blog-form').submit();
+    });
+    $('#publish-btn').click(function () {
+        $('[name="publish"]').val(true);
+        $('#blog-form').submit();
+    });
+    $('.ui.form').form({
+        fields:{
+            title:{
+                identifier:'title',
+                rules:[{
+                    type:'empty',
+                    prompt:'标题:请输入博客标题'
+                }]
+            },
+            content:{
+                identifier:'content',
+                rules:[{
+                    type:'empty',
+                    prompt:'标题:请输入博客内容'
+                }]
+            },
+            firstpicture:{
+                identifier:'firstpicture',
+                rules:[{
+                    type:'empty',
+                    prompt:'标题:请输入图片地址'
+                }]
+            }
+        }
+    });
+</script>
+</body>
+</html>
