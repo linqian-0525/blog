@@ -2,10 +2,12 @@ package com.lq.blog.service;
 
 import com.github.pagehelper.PageInfo;
 import com.lq.blog.Exception.NotFoundException;
-import com.lq.blog.mapper.TagExtMapper;
-import com.lq.blog.mapper.TagMapper;
-import com.lq.blog.model.Tag;
-import com.lq.blog.model.TagExample;
+import com.lq.blog.dto.BlogDTO;
+import com.lq.blog.dto.TagDto;
+import com.lq.blog.mapper.*;
+import com.lq.blog.model.*;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,14 @@ public class TagService {
     private TagExtMapper tagExtMapper;
     @Autowired
     private TagMapper tagMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private BlogExtMapper blogExtMapper;
+    @Autowired
+    private TypeMapper typeMapper;
+    @Autowired
+    private BlogService blogService;
     public PageInfo<Tag> listType() {
         List<Tag> list = tagExtMapper.list();
         PageInfo<Tag> pageInfo = new PageInfo<>(list);
@@ -74,5 +84,48 @@ public class TagService {
             }
         }
         return list;
+    }
+
+    public List<TagDto> tagDTO() {
+        List<Tag>  tags = tagExtMapper.list();
+        List<TagDto> tagDtoList =  new ArrayList<>();
+        for (Tag tag : tags){
+            TagDto tagDto = new TagDto();
+            BeanUtils.copyProperties(tag,tagDto);
+            tagDto.setBlogList(getListBlogById(tag.getId()));
+            tagDtoList.add(tagDto);
+        }
+        return tagDtoList;
+    }
+
+    public List<Blog> getListBlogById(Long id) {
+       List<Blog> blogs = blogExtMapper.list();
+       List<Blog> blogList = new ArrayList<>();
+       for (Blog blog : blogs){
+           String str[] = StringUtils.split(blog.getTagIds(),",");
+           for (int i = 0 ;i<str.length;i++){
+               Long s = Long.valueOf(str[i]);
+               if (s == id){
+                   blogList.add(blog);
+               }
+           }
+       }
+        return blogList;
+    }
+
+    public PageInfo<BlogDTO> pageQueryById(Long id) {
+        List<Blog> blogList = getListBlogById(id);
+        List<BlogDTO> blogDTOS = new ArrayList<>();
+        for (Blog blog : blogList){
+            BlogDTO blogDTO =  new BlogDTO();
+            BeanUtils.copyProperties(blog,blogDTO);
+            Type type = typeMapper.selectByPrimaryKey(blog.getTypeid());
+            blogDTO.setUser(userMapper.selectByPrimaryKey(blog.getUserid()));
+            blogDTO.setType(type);
+            blogDTO.setTags(blogService.getTags(blog.getTagIds()));
+            blogDTOS.add(blogDTO);
+        }
+        PageInfo<BlogDTO> pageInfo = new PageInfo<>(blogDTOS);
+        return pageInfo;
     }
 }
