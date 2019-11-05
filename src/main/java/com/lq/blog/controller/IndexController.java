@@ -42,7 +42,7 @@ public class IndexController {
             model.addAttribute("page",pageInfo);
             model.addAttribute("size",i);
             PageHelper.startPage(page,6);
-            model.addAttribute("types",typeService.listType());
+            model.addAttribute("types",typeService.listTypeDTO());
             PageHelper.startPage(page,6);
             model.addAttribute("tags",tagService.listType());
             String oderBy = "updatetime desc";

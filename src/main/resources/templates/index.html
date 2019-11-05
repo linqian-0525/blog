@@ -30,6 +30,11 @@
 				<i class="sidebar icon"></i>
 			</a>
 		</nav>
+		<div class="ui success message m-container-tiny" th:unless="${#strings.isEmpty(message)}">
+			<i class="close icon"></i>
+			<div class="header">提示:</div>
+			<p th:text="${message}">恭喜，操作成功</p>
+		</div>
 		<!--中间内容-->
 		<div class="m-container m-padded-tb-big">
 			<div class="ui container">
@@ -124,7 +129,7 @@
 							<div class="ui fluid vertical menu">
 								<a href="#" class="item"  th:each="type:${types.list}">
 									<span th:text="${type.name}">学习日志</span>
-									<div class="ui teal basic left pointing label">13</div>
+									<div class="ui teal basic left pointing label" th:text="${#arrays.length(type.blogList)}">13</div>
 								</a>
 							</div>
 						</div>
@@ -219,6 +224,12 @@
 			$('.menu.toggle').click(function(){
 				$('.m-item').toggleClass('m-mobile-hide');
 			});
+            $('.message .close')
+                .on('click',function () {
+                    $(this)
+                        .closest('.message')
+                        .transition('fade');
+                });
 		</script>
 	</body>
 </html>

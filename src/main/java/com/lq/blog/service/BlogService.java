@@ -197,4 +197,21 @@ public class BlogService {
 
         return blogDTO;
     }
+
+    public PageInfo<BlogDTO> getBlogByTypeId(Long id) {
+       BlogExample blogExample = new BlogExample();
+       blogExample.createCriteria().andTypeidEqualTo(id);
+       List<Blog> blogs = blogMapper.selectByExample(blogExample);
+       List<BlogDTO> blogDTOS = new ArrayList<>();
+       for (Blog blog :blogs){
+           BlogDTO blogDTO = new BlogDTO();
+           BeanUtils.copyProperties(blog,blogDTO);
+           Type type = typeMapper.selectByPrimaryKey(blog.getTypeid());
+           blogDTO.setUser(userMapper.selectByPrimaryKey(blog.getUserid()));
+           blogDTO.setType(type);
+           blogDTOS.add(blogDTO);
+       }
+       PageInfo<BlogDTO> pageInfo =  new PageInfo<>(blogDTOS);
+       return pageInfo;
+    }
 }

@@ -61,4 +61,24 @@ public class BlogUserController {
         attributes.addFlashAttribute("message","恭喜你注册成功了，登录吧");
         return "redirect:/login";
      }
+    @GetMapping("/user/edit")
+    public String editUser(){
+        return "eiditUser";
+    }
+    @PostMapping("/edit/input")
+    public String editInput(@RequestParam String nickname,
+                            @RequestParam String email,
+                            @RequestParam String avatar,
+                            HttpSession session,
+                            RedirectAttributes attributes){
+       User user = (User) session.getAttribute("user");
+       user.setNickname(nickname);
+       user.setEmail(email);
+       user.setAvatar(avatar);
+      int i= userService.update(user);
+      if(i==1){
+          attributes.addFlashAttribute("message","恭喜你修改成功了");
+      }
+        return "redirect:/";
+    }
 }

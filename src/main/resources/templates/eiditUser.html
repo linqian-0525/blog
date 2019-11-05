@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<meta charset="utf-8" />
+	<title>修改个人信息</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+	<link rel="stylesheet"  href="../static/css/me.css" />
+</head>
+<body>
+<!--导航-->
+<!--中间内容-->
+<div class="m-container-small m-padded-tb-big">
+		<div class="ui container">
+			<div class="ui middle aligned center aligned grid">
+				<br>
+				<form id="blog-form" action="#" method="post"  class="ui  form" th:action="@{/edit/input}" style="max-width: 30em !important;">
+					<div class="field">
+						<h3 class="ui teal aligned center header item">修改用户信息</h3>
+					</div>
+					<div class="field">
+						<div class="ui left labeled input">
+							<label class="ui teal basic label">&nbsp;用户名&nbsp;&nbsp;&nbsp;</label>
+							<input type="text" name="username" placeholder="用户名" th:value="${session.user.username}" th:readonly="true"/>
+						</div>
+					</div>
+					<div class="required field">
+					<div class="ui left labeled input">
+						<label class="ui teal basic label">&nbsp;&nbsp;昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</label>
+						<input type="text" name="nickname" placeholder="请输入昵称" />
+					</div>
+				 </div>
+					<div class="required field">
+						<div class="ui left labeled input">
+							<label class="ui teal basic label">&nbsp;&nbsp;&nbsp;&nbsp;email&nbsp;&nbsp;&nbsp;&nbsp;</label>
+							<input type="text" name="email" placeholder="请输入邮箱" th:value="${session.user.email}" />
+						</div>
+					</div>
+					<div class="required field">
+						<div class="ui left labeled input">
+							<label class="ui teal basic label">&nbsp;&nbsp;头&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;像</label>
+							<input type="text" name="avatar" placeholder="请输入头像地址" />
+						</div>
+					</div>
+
+					<div class="ui error message"></div>
+					<div class="ui right aligned container">
+						<button type="button" class="ui button" onclick="window.history.go(-1)">返回</button>
+						<button type="button" class="ui teal submit button">修改</button>
+					</div>
+					<div class="ui mini negative message"
+						 th:unless="${#strings.isEmpty(message)}" th:text="${message}">
+						用户名和密码错误
+					</div>
+				</form>
+			</div>
+		</div>
+</div>
+<br/>
+<br/>
+
+
+
+
+<!--/*/<th:block th:replace="_fragments :: script">/*/-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+<script>
+    //初始化MarkDown编译器
+    var contentEditor;
+
+    $(function() {
+        contentEditor = editormd("md-content", {
+            width   : "100%",
+            height  : 640,
+            syncScrolling : "single",
+            path    : "/lib/editormd/lib/"
+        });
+    });
+    $('.menu.toggle').click(function(){
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $('.ui.dropdown')
+        .dropdown({
+            on : 'hover'
+        });
+    $('#save-btn').click(function () {
+        $('[name="publish"]').val(false);
+        $('#blog-form').submit();
+    });
+    $('#publish-btn').click(function () {
+        $('[name="publish"]').val(true);
+        $('#blog-form').submit();
+    });
+    $('.ui.form').form({
+        fields:{
+            nickname:{
+                identifier:'nickname',
+                rules:[{
+                    type:'empty',
+                    prompt:'标题:请输入昵称'
+                }]
+            },
+            avatar:{
+                identifier:'avatar',
+                rules:[{
+                    type:'empty',
+                    prompt:'标题请输入头像地址:'
+                }]
+            },
+            firstpicture:{
+                identifier:'email',
+                rules:[{
+                    type:'email',
+                    prompt:'标题:请输入正确邮箱'
+                }]
+            }
+        }
+    });
+</script>
+</body>
+</html>
