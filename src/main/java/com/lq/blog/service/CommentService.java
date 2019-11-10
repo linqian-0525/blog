@@ -4,10 +4,13 @@ import com.lq.blog.dto.CommentDTO;
 import com.lq.blog.mapper.BlogMapper;
 import com.lq.blog.mapper.CommentExtMapper;
 import com.lq.blog.mapper.CommentMapper;
+import com.lq.blog.mapper.UserExtMapper;
 import com.lq.blog.model.Comment;
 import com.lq.blog.model.CommentExample;
+import com.lq.blog.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +26,8 @@ public class CommentService {
     private CommentExtMapper commentExtMapper;
     @Autowired
     private BlogMapper blogMapper;
+    @Autowired
+    private UserExtMapper userExtMapper;
     @Transactional
     public int saveComment (CommentDTO commentDTO){
         Long parentCommentId = commentDTO.getParentComment().getId();
@@ -35,16 +40,23 @@ public class CommentService {
         comment.setContent(commentDTO.getContent());
         comment.setBlogId(commentDTO.getBlog().getId());
         comment.setEmail(commentDTO.getEmail());
-        comment.setNickname(commentDTO.getNickname());
-        comment.setAvatar(commentDTO.getAvatar());
         comment.setCreateTime(new Date());
         comment.setAdminComment(commentDTO.getAdminComment());
+        User user =  userExtMapper.findByNameAndEmain(commentDTO.getNickname(),commentDTO.getEmail());
+        if (user == null) {
+            comment.setState(0);
+            comment.setAvatar(commentDTO.getAvatar());
+            comment.setNickname("匿名游客");
+        }else {
+            comment.setState(1);
+            comment.setNickname(commentDTO.getNickname());
+        }
         return commentMapper.insert(comment);
     }
 
     public  List<CommentDTO> listCommentByBlogId(Long blogId){
       CommentExample commentExample = new CommentExample();
-      commentExample.createCriteria().andBlogIdEqualTo(blogId);
+      commentExample.createCriteria().andBlogIdEqualTo(blogId).andStateEqualTo(1);
       List<Comment> comments = commentMapper.selectByExample(commentExample);
       List<CommentDTO> commentDTOList = new ArrayList<>();
       for (Comment comment :comments){

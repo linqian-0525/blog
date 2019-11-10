@@ -3,14 +3,8 @@ package com.lq.blog.service;
 import com.github.pagehelper.PageInfo;
 import com.lq.blog.Exception.NotFoundException;
 import com.lq.blog.dto.BlogDTO;
-import com.lq.blog.mapper.BlogExtMapper;
-import com.lq.blog.mapper.BlogMapper;
-import com.lq.blog.mapper.TypeMapper;
-import com.lq.blog.mapper.UserMapper;
-import com.lq.blog.model.Blog;
-import com.lq.blog.model.BlogExample;
-import com.lq.blog.model.Tag;
-import com.lq.blog.model.Type;
+import com.lq.blog.mapper.*;
+import com.lq.blog.model.*;
 import com.lq.blog.util.MarkdownUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringExclude;
@@ -33,6 +27,8 @@ public class BlogService {
     private UserMapper userMapper;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private CommentMapper commentMapper;
    public Blog getBlog(Long id){
      return blogMapper.selectByPrimaryKey(id);
     }
@@ -103,6 +99,9 @@ public class BlogService {
        }
     }
     public void deleteBlog(Long id){
+        CommentExample commentExample = new CommentExample();
+        commentExample.createCriteria().andBlogIdEqualTo(id);
+       commentMapper.deleteByExample(commentExample);
         blogMapper.deleteByPrimaryKey(id);
     }
 

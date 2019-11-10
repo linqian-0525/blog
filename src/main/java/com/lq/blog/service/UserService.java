@@ -3,6 +3,7 @@ package com.lq.blog.service;
 import com.lq.blog.mapper.UserExtMapper;
 import com.lq.blog.mapper.UserMapper;
 import com.lq.blog.model.User;
+import com.lq.blog.model.UserExample;
 import com.lq.blog.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

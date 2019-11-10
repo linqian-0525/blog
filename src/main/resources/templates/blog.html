@@ -159,8 +159,13 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
+							<div class="ui container">
+								<div class="ui message" th:if="${session.manage != null}">
+									<div class="header">提示:</div>
+									<p th:text="${session.manage}">恭喜，操作成功</p>
+								</div>
+							</div>
+						</div>
 		</div>
 			<div id="comment-form" class="ui form">
 				<input type="hidden" name="blog.id" th:value="${blog.id}">
@@ -186,6 +191,7 @@
 			   	</div>
 			   </div>
 			</div>
+
 		</div>
 	</div>
  </div>
@@ -258,6 +264,14 @@
         <!--/*/</th:block>/*/-->
 
 		<script th:inline="javascript">
+            $('.message .close')
+                .on('click', function() {
+                    $(this)
+                        .closest('.message')
+                        .transition('fade')
+                    ;
+                })
+            ;
 			$('.menu.toggle').click(function(){
 				$('.m-item').toggleClass('m-mobile-hide');
 			});

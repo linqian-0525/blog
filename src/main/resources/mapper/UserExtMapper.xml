@@ -18,4 +18,15 @@
     from user
     where username = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
   </select>
+  <select id="checkUserName"  resultType="java.lang.String">
+    select username
+    from user
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+  <select id="findByNameAndEmain"  resultType="com.lq.blog.model.User">
+    select
+    *
+    from user
+    where username = #{username,jdbcType=VARCHAR} and email = #{email,jdbcType=VARCHAR}
+  </select>
 </mapper>
