@@ -1,6 +1,9 @@
 body{
 	background: url("../img/bg2.png");
 }
+.m-padded-mis{
+	padding: 0.0em !important;
+}
 .m-padded-mini{
 	padding: 0.2em !important;
 	}
@@ -70,6 +73,9 @@ body{
 }
 
 /*---margin----*/
+.m-margin-mis{
+	margin-left: 0.5em !important;
+}
 .m-margin-top-small{
 	margin-top:0.5em !important ;
 }

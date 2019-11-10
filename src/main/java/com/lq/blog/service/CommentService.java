@@ -1,5 +1,6 @@
 package com.lq.blog.service;
 
+import com.github.pagehelper.PageInfo;
 import com.lq.blog.dto.CommentDTO;
 import com.lq.blog.mapper.BlogMapper;
 import com.lq.blog.mapper.CommentExtMapper;
@@ -50,6 +51,7 @@ public class CommentService {
         }else {
             comment.setState(1);
             comment.setNickname(commentDTO.getNickname());
+            comment.setAvatar(commentDTO.getAvatar());
         }
         return commentMapper.insert(comment);
     }
@@ -71,5 +73,54 @@ public class CommentService {
     }
 
 
+    public PageInfo<CommentDTO> listComment() {
+        List<CommentDTO> commentDTOS = new ArrayList<>();
+        CommentExample example = new CommentExample();
+        example.createCriteria();
+        List<Comment> comments = commentMapper.selectByExample(example);
+        for (Comment comment : comments){
+            CommentDTO commentDTO =  new CommentDTO();
+            BeanUtils.copyProperties(comment,commentDTO);
+            commentDTO.setBlog(blogMapper.selectByPrimaryKey(comment.getBlogId()));
+            commentDTOS.add(commentDTO);
+        }
+        PageInfo<CommentDTO> pageInfo = new PageInfo<>(commentDTOS);
+        return pageInfo;
+    }
 
+    public PageInfo<CommentDTO> listCommentByState() {
+        List<CommentDTO> commentDTOS = new ArrayList<>();
+        CommentExample example = new CommentExample();
+        example.createCriteria().andStateEqualTo(0);
+        List<Comment> comments = commentMapper.selectByExample(example);
+        for (Comment comment : comments){
+            CommentDTO commentDTO =  new CommentDTO();
+            BeanUtils.copyProperties(comment,commentDTO);
+            commentDTO.setBlog(blogMapper.selectByPrimaryKey(comment.getBlogId()));
+            commentDTOS.add(commentDTO);
+        }
+        PageInfo<CommentDTO> pageInfo = new PageInfo<>(commentDTOS);
+        return pageInfo;
+    }
+
+    public int update(Long id, int i) {
+        Comment comment = commentMapper.selectByPrimaryKey(id);
+        Comment comment1 = new Comment();
+        BeanUtils.copyProperties(comment,comment1);
+        CommentExample commentExample = new CommentExample();
+        commentExample.createCriteria().andIdEqualTo(id);
+        int x=0;
+        if (i == 1)
+        {
+            x=1;
+            comment1.setState(1);
+            commentMapper.updateByExample(comment1,commentExample);
+        }
+        if (i==3){
+            x=3;
+            comment1.setState(3);
+            commentMapper.updateByExample(comment1,commentExample);
+        }
+        return x;
+    }
 }

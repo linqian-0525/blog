@@ -3,6 +3,7 @@ package com.lq.blog.controller;
 import com.lq.blog.mapper.UserExtMapper;
 import com.lq.blog.model.User;
 import com.lq.blog.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -85,10 +86,14 @@ public class BlogUserController {
                             HttpSession session,
                             RedirectAttributes attributes){
        User user = (User) session.getAttribute("user");
+       User user1 = new User();
+       user1.setAvatar(user.getAvatar());
+       user1.setEmail(user.getEmail());
+       user1.setNickname(user.getNickname());
        user.setNickname(nickname);
        user.setEmail(email);
        user.setAvatar(avatar);
-      int i= userService.update(user);
+      int i= userService.update(user,user1);
       if(i==1){
           attributes.addFlashAttribute("message","恭喜你修改成功了");
       }

@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface CommentExtMapper {
   List<Comment> findAll(@Param(value = "id") Long id);
+
+    int count();
 }

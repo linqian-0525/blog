@@ -23,4 +23,7 @@
      select * from comment
      where parent_comment_id=#{id}
   </select>
+  <select id="count" resultType="java.lang.Integer">
+     select count(*)from comment
+  </select>
 </mapper>
