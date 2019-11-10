@@ -29,7 +29,7 @@
                     </div>
                     <i class="dropdown icon"></i>
                     <div class="menu">
-                        <a href="#" id="out" th:href="@{/admin/logout}" class="item">注销 </a>
+                        <a href="#" id="out" class="item">注销 </a>
                         <a href="#" th:href="@{/admin}" class="item" th:if="${session.user == null}">登录</a>
                         <a href="#" th:href="@{/admin/profile}" class="item">修改个人信息</a>
                     </div>

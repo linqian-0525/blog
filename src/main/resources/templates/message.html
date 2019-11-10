@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns="http://www.w3.org/1999/xhtml">
+	<head th:replace="_fragments :: head(~{::title})">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<meta charset="utf-8" />
+		<title>留言板</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+		<link rel="stylesheet"  href="../static/css/me.css" />
+	</head>
+	<body>
+		<!--导航-->
+		<nav  th:replace="_fragments :: menu(6)" class="ui inverted attached segment m-padded-tb-mini" >
+			<div class="ui container" >
+				<div class="ui inverted secondary stackable menu">
+				<h2 class="ui teal header item">Blog</h2> 
+				<a href="#" class="item m-mobile-hide"><i class="mini home icon"></i>首页</a>
+				<a href="#" class="m-item item  m-mobile-hide"><i class="mini idea icon"></i>分类</a>
+				<a href="#" class="m-item item  m-mobile-hide"><i class="mini tags icon"></i>标签</a>
+				<a href="#" class="m-item item m-mobile-hide"><i class="mini clone icon"></i>归档</a>
+				<a href="#" class="m-item item  m-mobile-hide"><i class="mini info icon"></i>关于我</a>
+				<div class="right m-item item m-mobile-hide">
+					<div class="ui icon inverted transparent input">
+						<input type="text" placeholder="点此搜索"/>
+						<i class="search link icon"></i>
+					</div>
+				</div>
+			</div>
+			</div>
+			<a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+				<i class="sidebar icon"></i>
+			</a>
+		</nav>
+		<!--中间内容-->
+		<div class="m-container m-padded-tb-big">
+			<div class="ui container">
+				<div class="ui top attached segment">
+					<div class="ui middle aligned column grid">
+						<div class="column">
+							<h3 class="ui teal header">留言</h3>
+						</div>
+					</div>
+				</div>
+				<div class="ui bottom attached segment">
+					<!--留言区域-->
+					<div id="comment-form" class="ui form">
+						<div class="field">
+							<textarea name="content" placeholder="请输入留言信息...."></textarea>
+						</div>
+						<div class="fields">
+							<div class="field m-mobile-wide m-margin-bottom-small">
+								<div class="ui left icon input">
+									<i class="user icon"></i>
+									<input type="text" name="nickname" placeholder="姓名" th:value="${session.user}!=null ? ${session.user.nickname}"/>
+								</div>
+							</div>
+							<div class="field m-mobile-wide m-margin-bottom-small">
+								<div class="ui left icon input">
+									<i class="mail icon"></i>
+									<input type="text" name="email" placeholder="邮箱" th:value="${session.user}!=null ? ${session.user.email}"/>
+								</div>
+							</div>
+							<div class="field m-mobile-wide m-margin-bottom-small">
+								<button id="commentpost-btn" type="button" class="ui teal button m-mobile-wide"><i class="edit icon"></i>发布</button>
+							</div>
+						</div>
+					<div id="comment-container" class="ui teal segment">
+							<div class="ui threaded comments" style="max-width: 100%;" >
+								<h3 class="ui dividing header">留言内容</h3>
+								<div class="comment" >
+									<a class="avatar">
+										<img src="https://picsum.photos/id/1/100/100?image=129">
+									</a>
+									<div class="content">
+										<a class="author">
+											<span ></span>
+											<div class="ui mini basic teal leaf pointing label m-padded-mini">博主</div>
+										</a>
+										<div class="metadata">
+											<span class="date"></span>
+										</div>
+										<div class="text">太赞了！ </div>
+										<div class="actions">
+											<a class="reply" data-commentid="1" data-commentnickname="Matt">回复</a>
+										</div>
+									</div>
+									<div class="comments">
+										<div class="comment">
+											<a class="avatar">
+												<img src="https://picsum.photos/id/1/100/100?image=129">
+											</a>
+											<div class="content">
+												<a class="author" >
+													<span></span>
+													<!--th:text="${reply.comment.nickname}"-->
+													<div class="ui mini basic teal leaf pointing label m-padded-mini">博主</div>
+													&nbsp;<span  class="m-teal">@ 小白</span>
+												</a>
+												<div class="metadata">
+													<span class="date" >今天下午 5:42</span>
+												</div>
+												<div class="text" >太赞了！ </div>
+												<div class="actions">
+													<a class="reply" data-commentid="1" data-commentnickname="Matt">回复</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+					</div>
+			</div>
+		</div>
+					
+
+
+
+
+			<br />
+	    	<br />
+	    	<br />
+	    	<br />
+	    	<br />
+	    	<br />
+	    	<br />
+	    	
+		<!--底部footer-->
+	    <footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+	    	<div class="ui center aligned container">
+	    		<div class="ui inverted divided stackable grid">
+	    			<div class="three wide column">
+	    				<div class="ui inverted link list">
+	    					<img src="static/img/wechat.jpg" th:src="@{/img/wechat.jpg}" class="ui rounded image" alt="" style="width:110px"/>
+	    				</div>
+	    			</div>
+	    			<div class="three wide column">
+	    				<h4 class="ui inverted header m-text-thin m-text-spaced">最新博客</h4>
+	    				<div class="ui inverted link list">
+	    					<a href="#" class="item">用户故事(User Story)</a>
+	    					<a href="#" class="item">用户故事(User Story)</a>
+	    					<a href="#" class="item">用户故事(User Story)</a>
+	    				</div>
+	    			</div>
+	    			<div class="three wide column">
+	    				<h4 class="ui inverted header m-text-thin m-text-spaced">联系我</h4>
+	    				<div class="ui inverted link list">
+	    					<a href="#" class="item">Email:1027716017@QQ.com</a>
+	    					<a href="#" class="item">QQ:1027716017</a>
+	    				</div>
+	    			</div>
+	    			<div class="seven wide column">
+	    				<h4 class="ui inverted header m-text-thin m-text-spaced">Blog</h4>
+	    				<p class="m-text-thin m-text-spaced m-opacity-mini">这是我的个人博客，会分享关于编程、写作、思考相关的任何内容，希望可以给来这的人有所帮助</p>
+	    			</div>
+	    		</div>
+	    		<div class="ui inverted section divider"><br/><br/>
+	    			<p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2019 Blog Designed by LQ</p> 
+	    		</div>
+	    	</div>
+	    
+	    </footer>
+		<!--/*/<th:block th:replace="_fragments :: script">/*/-->
+		<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js">
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+		<!--/*/</th:block>/*/-->
+		<script>
+			$('.menu.toggle').click(function(){
+				$('.m-item').toggleClass('m-mobile-hide');
+			});
+            $('.message .close')
+                .on('click',function () {
+                    $(this)
+                        .closest('.message')
+                        .transition('fade');
+                });
+		</script>
+	</body>
+</html>

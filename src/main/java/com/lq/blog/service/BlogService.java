@@ -13,14 +13,13 @@ import com.lq.blog.model.Tag;
 import com.lq.blog.model.Type;
 import com.lq.blog.util.MarkdownUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringExclude;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BlogService {
@@ -214,4 +213,14 @@ public class BlogService {
        PageInfo<BlogDTO> pageInfo =  new PageInfo<>(blogDTOS);
        return pageInfo;
     }
+
+      public   Map<String,List<Blog>> archiveBlog(){
+            List<String> years = blogExtMapper.stringListYear();
+            Map<String,List<Blog>> map = new HashMap<>();
+            for (String year : years ){
+                map.put(year,blogExtMapper.listByYear(year));
+            }
+            return map;
+    }
+
 }

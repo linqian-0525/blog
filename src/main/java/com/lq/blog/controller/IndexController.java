@@ -73,4 +73,11 @@ public class IndexController {
         model.addAttribute("size",i);
     return "search";
     }
+    @GetMapping("/footer/newblog")
+    public String newBlogs(Model model, @RequestParam(defaultValue = "1",value = "page") Integer page){
+        String orderBy = "updatetime desc";
+        PageHelper.startPage(page,3,orderBy);
+        model.addAttribute("newblogs",blogExtMapper.list());
+        return "_fragments :: newblogList";
+    }
 }
