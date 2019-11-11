@@ -49,7 +49,6 @@ public class UserService {
 
         CommentExample commentExample  = new CommentExample();
         commentExample.createCriteria().andNicknameEqualTo(nickName).andEmailEqualTo(email).andAvatarEqualTo(avatar);
-
         List<Comment> comments = commentMapper.selectByExample(commentExample);
         for (Comment c :comments){
             Comment comment = new Comment();

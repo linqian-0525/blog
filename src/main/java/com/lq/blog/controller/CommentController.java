@@ -24,8 +24,15 @@ public class CommentController {
     @Value("${comment.avatar}")
     private String avatar;
     @GetMapping("/comments/{blogId}")
-    public String comments(@PathVariable Long blogId, Model model){
+    public String comments(@PathVariable Long blogId, Model model,HttpSession session){
+
         model.addAttribute("comments",commentService.listCommentByBlogId(blogId));
+        //这里可以使用这个方法来判断  然后添加一个message 让在前台显示
+        String manage = (String) session.getAttribute("manage");
+        if (manage !=null){
+            model.addAttribute("message",manage);
+            session.removeAttribute("manage");
+        }
         return "blog :: commentList";
     }
 
@@ -46,7 +53,7 @@ public class CommentController {
          else if (user == null && user1==null){
              comment.setAdminComment(false);
              comment.setAvatar(avatar);
-             session.setAttribute("manage","没有注册的用户，评论需要提交给管理员回复哦！");
+             session.setAttribute("manage","没有注册的用户，评论需要提交给管理员审核哦！");
          }
         else if (user1 != null){
              if (user1.getType()==1l)

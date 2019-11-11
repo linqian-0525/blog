@@ -27,6 +27,6 @@
     select
     *
     from user
-    where username = #{username,jdbcType=VARCHAR} and email = #{email,jdbcType=VARCHAR}
+    where nickname = #{nickname,jdbcType=VARCHAR} and email = #{email,jdbcType=VARCHAR}
   </select>
 </mapper>

@@ -11,5 +11,5 @@ public interface UserExtMapper {
 
     String checkUserName(@Param(value = "username") String username);
 
-  User findByNameAndEmain(@Param(value = "username")String nickname, @Param(value = "email")String email);
+  User findByNameAndEmain(@Param(value = "nickname")String nickname, @Param(value = "email")String email);
 }

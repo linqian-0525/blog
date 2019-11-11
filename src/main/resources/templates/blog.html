@@ -159,10 +159,10 @@
                                     </div>
                                 </div>
                             </div>
-							<div class="ui container">
-								<div class="ui message" th:if="${session.manage != null}">
+							<div class="ui  container">
+								<div class="ui warning message" th:if="${message != null}">
 									<div class="header">提示:</div>
-									<p th:text="${session.manage}">恭喜，操作成功</p>
+									<p th:text="${message}">恭喜，操作成功</p>
 								</div>
 							</div>
 						</div>
