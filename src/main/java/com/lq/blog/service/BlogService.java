@@ -222,4 +222,9 @@ public class BlogService {
             return map;
     }
 
+    public PageInfo<Blog> listByView() {
+       List<Blog> blogs = blogExtMapper.list();
+       PageInfo<Blog> pageInfo = new PageInfo<>(blogs);
+       return pageInfo;
+    }
 }

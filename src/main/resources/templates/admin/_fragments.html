@@ -21,7 +21,13 @@
             <a href="#" th:href="@{/admin/blogs}" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i class="mini home icon"></i>博客</a>
             <a href="#" th:href="@{/admin/types}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class="mini idea icon"></i>分类</a>
             <a href="#" th:href="@{/admin/tags}" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'"><i class="mini tags icon"></i>标签</a>
-            <a href="#" th:href="@{/admin/message}" class="m-item item  m-mobile-hide" th:classappend="${n==4} ? 'active'"><i class="mini archive icon"></i>留言板</a>
+            <div class="ui dropdown item m-padded-mis"  style="margin-right:10px">
+                <a class="m-item item m-mobile-hide"  th:classappend="${n==4} ? 'active'"> <i class="mini archive icon"></i>留言管理</a>
+                <div class="menu">
+                    <a href="#" th:href="@{/admin/messagemange}"  class="m-item item m-mobile-hide">留言审核 </a>
+                    <a href="#" th:href="@{/admin/messages}" class="m-item item m-mobile-hide">留言信息管理</a>
+                </div>
+            </div>
             <div class="ui dropdown item m-padded-mis"  style="margin-right:10px">
                <a class="m-item item m-mobile-hide"  th:classappend="${n==5} ? 'active'"> <i class="comment alternate outline icon"></i>评论管理</a>
                 <div class="menu">

@@ -22,4 +22,6 @@ public interface BlogExtMapper {
 
     @Select("SELECT * FROM blogs b WHERE DATE_FORMAT(b.createTime,'%Y')= #{year}")
     List<Blog> listByYear(String year);
+
+    List<Blog> listByView();
 }

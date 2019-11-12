@@ -79,4 +79,41 @@ public class MessageService {
         }
         return messageDTOList;
     }
+
+    public PageInfo<Message> list() {
+        MessageExample messageExample = new MessageExample();
+        messageExample.createCriteria();
+        List<Message> messages = messageMapper.selectByExample(messageExample);
+        PageInfo<Message> pageInfo = new PageInfo<>(messages);
+        return pageInfo;
+    }
+
+    public PageInfo<Message> listMessageByState() {
+        MessageExample messageExample = new MessageExample();
+        messageExample.createCriteria().andStateEqualTo(0);
+        List<Message> messages = messageMapper.selectByExample(messageExample);
+        PageInfo<Message> pageInfo = new PageInfo<>(messages);
+        return pageInfo;
+    }
+
+    public int update(Long id, int i) {
+        Message m = messageMapper.selectByPrimaryKey(id);
+        Message message = new Message();
+        BeanUtils.copyProperties(m,message);
+        MessageExample messageExample = new MessageExample();
+        messageExample.createCriteria().andIdEqualTo(id);
+        int x= 0;
+        if (i == 1)
+        {
+            x=1;
+            message.setState(1);
+            messageMapper.updateByExample(message,messageExample);
+        }
+        if (i==3){
+            x=3;
+            message.setState(3);
+            messageMapper.updateByExample(message,messageExample);
+        }
+        return x;
+    }
 }

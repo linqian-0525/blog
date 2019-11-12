@@ -43,10 +43,11 @@ public class IndexController {
             model.addAttribute("size",i);
             PageHelper.startPage(page,6);
             model.addAttribute("types",typeService.listTypeDTO());
-            PageHelper.startPage(page,6);
-            model.addAttribute("tags",tagService.listType());
+            String oeder = "view desc";
+            PageHelper.startPage(page,5,oeder);
+            model.addAttribute("tags",blogService.listByView());
             String oderBy = "updatetime desc";
-            PageHelper.startPage(page,6,oderBy);
+            PageHelper.startPage(page,5,oderBy);
             model.addAttribute("recommendBlogs",blogService.list());
             return "index";
     }

@@ -135,23 +135,15 @@
 						</div>
 					</div>
 				<!--标签-->
-				    <div class="ui segments m-margin-top-large">
-				    	<div class="ui secondary segment">
-							<div class="ui two column grid">
-								<div class="column">
-									<i class="tags icon"></i>标签
-								</div>
-								<div class="right aligned column">
-									<a href="#" target="_blank">more<i class="angle double right icon"></i></a>
-								</div>
-							</div>
-							<div class="ui teal segment">
-								<a href="#" target="_blank" class="ui teal basic left pointing label m-magin-tb-tiny"  th:each="tag:${tags.list}">
-									<span th:text="${tag.name}">方法论</span><div class="detail">23</div>
-								</a>
-							</div>
+					<div class="ui segments m-margin-top-large">
+						<div class="ui secondary segment">
+							<i class="heartbeat icon"></i>热门文章
 						</div>
-					</div>	
+						<div class="ui segment" th:each="blog : ${tags.list}">
+							<a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="m-black m-text-thin" th:text="${blog.title}">用户故事</a>
+						</div>
+
+					</div>
 				<!--最新推荐-->
 					<div class="ui segments m-margin-top-large">
 						<div class="ui secondary segment">						
