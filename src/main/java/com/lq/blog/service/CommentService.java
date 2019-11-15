@@ -2,13 +2,8 @@ package com.lq.blog.service;
 
 import com.github.pagehelper.PageInfo;
 import com.lq.blog.dto.CommentDTO;
-import com.lq.blog.mapper.BlogMapper;
-import com.lq.blog.mapper.CommentExtMapper;
-import com.lq.blog.mapper.CommentMapper;
-import com.lq.blog.mapper.UserExtMapper;
-import com.lq.blog.model.Comment;
-import com.lq.blog.model.CommentExample;
-import com.lq.blog.model.User;
+import com.lq.blog.mapper.*;
+import com.lq.blog.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +24,8 @@ public class CommentService {
     private BlogMapper blogMapper;
     @Autowired
     private UserExtMapper userExtMapper;
+    @Autowired
+    private CNotificationMapper cNotificationMapper;
     @Transactional
     public int saveComment (CommentDTO commentDTO){
         Long parentCommentId = commentDTO.getParentComment().getId();
@@ -53,7 +50,25 @@ public class CommentService {
             comment.setNickname(commentDTO.getNickname());
             comment.setAvatar(commentDTO.getAvatar());
         }
+        notification(comment);
         return commentMapper.insert(comment);
+    }
+
+    private void notification(Comment comment) {
+        CNotification notification = new CNotification();
+        if (comment.getState()==0){
+            notification.setType(0);
+        }else {
+            notification.setType(1);
+        }
+        notification.setBlogId(comment.getBlogId());
+        notification.setCreatetime(new Date());
+        Blog blog = blogMapper.selectByPrimaryKey(comment.getBlogId());
+        notification.setBlogTitle(blog.getTitle());
+        notification.setStatus(0);
+        notification.setNotifier(comment.getNickname());
+        notification.setRecevier("管理员");
+        cNotificationMapper.insert(notification);
     }
 
     public  List<CommentDTO> listCommentByBlogId(Long blogId){

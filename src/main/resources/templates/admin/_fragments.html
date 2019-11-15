@@ -34,6 +34,11 @@
                     <a href="#" th:href="@{/admin/manage}"  class="m-item item m-mobile-hide">评论审核 </a>
                     <a href="#" th:href="@{/admin/comments}" class="m-item item m-mobile-hide">评论信息管理</a>
                 </div>
+            </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="right m-item m-mobile-hide menu">
+                <a class="m-item item m-mobile-hide" th:href="@{/admin/notification}" th:classappend="${n==6} ? 'active'"><i class="bell outline icon"></i>通知<span class="m-text-color" style="margin-bottom: 1em" th:text="${session.unread}">23</span></a>
             </div>
             <div class="right m-item m-mobile-hide menu">
                 <div class="ui dropdown  item">
@@ -45,7 +50,6 @@
                     <div class="menu">
                         <a href="#" id="out" class="item">注销 </a>
                         <a href="#" th:href="@{/admin}" class="item" th:if="${session.user == null}">登录</a>
-                        <a href="#" th:href="@{/admin/profile}" class="item">修改个人信息</a>
                     </div>
                 </div>
             </div>

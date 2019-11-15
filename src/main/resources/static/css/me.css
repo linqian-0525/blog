@@ -58,6 +58,9 @@ body{
 .m-text-thin{
 	font-weight: 300 !important;
 }
+.m-text-color{
+   text-decoration-color: red;
+}
 .m-text-spaced{
 	letter-spacing: 1px !important;
 }
@@ -91,6 +94,10 @@ body{
 }
 .m-margin-bottom-small{
 	margin-bottom: 0.5em !important;
+}
+.m-margin-right{
+	position: absolute;
+	margin-right: 0.5em !important;
 }
 /*---position----*/
 .m-right-top{

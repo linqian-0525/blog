@@ -199,13 +199,18 @@
    <script>
 		//初始化MarkDown编译器
 		var contentEditor;
-
             $(function() {
+
                 contentEditor = editormd("md-content", {
-                    width   : "100%",
-                    height  : 640,
-                    syncScrolling : "single",
-                    path    : "/lib/editormd/lib/"
+                    width  : "100%",
+                    height : 350,
+                    path    : "/lib/editormd/lib/",
+                    delay:0,
+                    watch:false,
+                    placeholder:"请输入问题",
+                    imageUpload:true,
+                    imageFormats:["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                    imageUploadURL:"/file/upload",
                 });
             });
 			$('.menu.toggle').click(function(){
