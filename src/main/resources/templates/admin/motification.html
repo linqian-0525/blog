@@ -3,7 +3,7 @@
 	<head th:replace="admin/_fragments :: head(~{::title})">>
 		<meta name="viewport" content="width=device-width,initial-scale=1.0">
 		<meta charset="utf-8" />
-		<title>消息通知</title>
+		<title>留言通知</title>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
 		<link rel="stylesheet"  href="../../static/css/me.css"/>
 	</head>
@@ -39,8 +39,8 @@
 		<div class="ui attached pointing menu">
 			<div class="ui container">
 				<div class="right menu">
-			      <a href="#" th:href="@{/admin/notification}" class="active teal item">评论通知</a>
-                    <a href="#" th:href="@{/admin/motification}" class="teal item">留言通知</a>
+			      <a href="#" th:href="@{/admin/notification}" class="teal item">评论通知</a>
+                    <a href="#" th:href="@{/admin/motification}" class="active teal item">留言通知</a>
 				</div>
 			</div>
 		</div>
@@ -49,24 +49,24 @@
 			<div class="ui container">
                 <div  class="ui teal segment">
                     <div class="ui threaded comments" style="max-width: 100%;" >
-                        <h3 class="ui dividing header">评论通知</h3>
+                        <h3 class="ui dividing header">留言通知</h3>
                         <div class="comment">
-                            <div class="text" th:each="notification:${page.list}">
-                              博客  <span th:text="${notification.blogTitle}">测试文本</span>
-								有<span th:text="${notification.notifier}">有某人的</span>
-								<span th:text="${notification.type == 0} ? '新的审核':'新的评论'">新的评论</span>
+                            <div class="text" th:each="mnotification:${page.list}">
+                              <span>留言板</span>
+								有<span th:text="${mnotification.nickname}">有某人的</span>
+								<span th:text="${mnotification.type == 0} ? '新的留言审核':'新的留言'">新的留言</span>
                                 <div class="ui red mini basic label">未读</div>
-                                 <a href="#" class="m-item item m-teal m-padded-mini" style="float: right"th:href="@{/admin/notification/{id}/input(id=${notification.id})}">标记为已读</a>
+                                 <a href="#" class="m-item item m-teal m-padded-mini" style="float: right" th:href="@{/admin/motification/{id}/input(id=${mnotification.id})}">标记为已读</a>
                             </div>
                         </div>
                     </div>
                     <div class="ui bottom attached segment">
                         <div class="ui middle aligned two column grid">
                             <div class="column">
-                                <a class="ui mini primary basic button" th:href="@{/admin/notification(page=${page.prePage})}">上一页</a>
+                                <a class="ui mini primary basic button" th:href="@{/admin/motification(page=${page.prePage})}">上一页</a>
                             </div>
                             <div class="right aligned column">
-                                <a class="ui mini primary basic button" th:href="@{/admin/notification(page=${page.nextPage})}">下一页</a>
+                                <a class="ui mini primary basic button" th:href="@{/admin/motification(page=${page.nextPage})}">下一页</a>
                             </div>
                         </div>
                     </div>

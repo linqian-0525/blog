@@ -59,7 +59,11 @@ body{
 	font-weight: 300 !important;
 }
 .m-text-color{
-   text-decoration-color: red;
+	background-color: #3cddd4b8;
+	padding: 2px 4px;
+	color: white;
+	margin-left: 3px;
+	font-size: 12px;
 }
 .m-text-spaced{
 	letter-spacing: 1px !important;

@@ -55,6 +55,9 @@ public class CommentService {
     }
 
     private void notification(Comment comment) {
+        if(comment.getAdminComment()==true){
+            return;
+        }
         CNotification notification = new CNotification();
         if (comment.getState()==0){
             notification.setType(0);

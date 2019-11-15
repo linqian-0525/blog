@@ -27,4 +27,9 @@ public class CNotificationService {
         cNotification.setStatus(1);
         mapper.updateByPrimaryKey(cNotification);
     }
+    public Long unreadCount(){
+        CNotificationExample example = new CNotificationExample();
+        example.createCriteria().andStatusEqualTo(0);
+        return mapper.countByExample(example);
+    }
 }

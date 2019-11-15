@@ -29,7 +29,7 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table schema="DB2ADMIN" tableName="cnotification" domainObjectName="CNotification" >
+        <table schema="DB2ADMIN" tableName="mnotification" domainObjectName="MNotification" >
         </table>
     </context>
 </generatorConfiguration>

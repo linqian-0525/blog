@@ -2,8 +2,10 @@ package com.lq.blog.service;
 
 import com.github.pagehelper.PageInfo;
 import com.lq.blog.dto.MessageDTO;
+import com.lq.blog.mapper.MNotificationMapper;
 import com.lq.blog.mapper.MessageMapper;
 import com.lq.blog.mapper.UserExtMapper;
+import com.lq.blog.model.MNotification;
 import com.lq.blog.model.Message;
 import com.lq.blog.model.MessageExample;
 import com.lq.blog.model.User;
@@ -21,6 +23,8 @@ public class MessageService {
     private UserExtMapper userExtMapper;
     @Autowired
     private MessageMapper messageMapper;
+    @Autowired
+    private MNotificationMapper mapper;
     public void save(MessageDTO messageDTO) {
         Long parentCommentId = messageDTO.getParentMessage().getId();
         Message message = new Message();
@@ -44,7 +48,24 @@ public class MessageService {
         message.setContent(messageDTO.getContent());
         message.setCreateTime(new Date());
         message.setEmail(messageDTO.getEmail());
+        notification(message);
         messageMapper.insert(message);
+    }
+
+    private void notification(Message message) {
+        if (message.getAdminReply()==true){
+            return;
+        }
+        MNotification notification = new MNotification();
+        notification.setCreatetime(new Date());
+        notification.setNickname(message.getNickname());
+        notification.setState(0);
+        if (message.getState()==0){
+            notification.setType(0);
+        }else {
+            notification.setType(1);
+        }
+        mapper.insert(notification);
     }
 
     public List<MessageDTO> listMessage() {
