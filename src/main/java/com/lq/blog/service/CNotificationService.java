@@ -7,7 +7,7 @@ import com.lq.blog.model.CNotificationExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Service

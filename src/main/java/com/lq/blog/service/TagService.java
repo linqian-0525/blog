@@ -29,6 +29,8 @@ public class TagService {
     private TypeMapper typeMapper;
     @Autowired
     private BlogService blogService;
+    @Autowired
+    private BlogMapper blogMapper;
     public PageInfo<Tag> listType() {
         List<Tag> list = tagExtMapper.list();
         PageInfo<Tag> pageInfo = new PageInfo<>(list);
@@ -99,13 +101,16 @@ public class TagService {
     }
 
     public List<Blog> getListBlogById(Long id) {
-       List<Blog> blogs = blogExtMapper.list();
+
+        BlogExample example = new BlogExample();
+        example.createCriteria();
+       List<Blog> blogs = blogMapper.selectByExample(example);
        List<Blog> blogList = new ArrayList<>();
        for (Blog blog : blogs){
            String str[] = StringUtils.split(blog.getTagIds(),",");
-           for (int i = 0 ;i<str.length;i++){
+           for (int i = 0 ;i<=str.length-1;i++){
                Long s = Long.valueOf(str[i]);
-               if (s == id){
+               if (s .equals(id) ){
                    blogList.add(blog);
                }
            }

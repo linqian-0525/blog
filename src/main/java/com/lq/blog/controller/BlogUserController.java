@@ -66,7 +66,7 @@ public class BlogUserController {
         }
         else {
             user.setUsername(username);
-            user.setPassword(password);
+            user.setPassword("fcea920f7412b5da7be0cf42b8c93759");
             user.setNickname(nickname);
             user.setEmail(email);
             user.setAvatar(avatar);

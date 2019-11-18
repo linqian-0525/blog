@@ -6,6 +6,7 @@ import com.lq.blog.dto.TypeDto;
 import com.lq.blog.mapper.BlogMapper;
 import com.lq.blog.mapper.TypeExtMapper;
 import com.lq.blog.mapper.TypeMapper;
+import com.lq.blog.model.Blog;
 import com.lq.blog.model.BlogExample;
 import com.lq.blog.model.Type;
 import com.lq.blog.model.TypeExample;
@@ -60,8 +61,17 @@ public class TypeService {
       return i;
     }
     @Transactional
-    public void deleteType(Long id){
-       typeMapper.deleteByPrimaryKey(id);
+    public int deleteType(Long id){
+        BlogExample example = new BlogExample();
+        example.createCriteria().andTypeidEqualTo(id);
+        List<Blog> blogs = blogMapper.selectByExample(example);
+        if (blogs.size()==0){
+            typeMapper.deleteByPrimaryKey(id);
+            return 1;
+        }
+      else {
+          return 0;
+        }
     }
 
     public PageInfo<TypeDto> listTypeDTO() {

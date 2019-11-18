@@ -20,12 +20,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object handler) throws Exception {
+        Long nRead = cservice.unreadCount();
+        Long mRead = mservice.unreadCount();
+        Long unread = nRead + mRead;
+        request.getSession().setAttribute("unread",unread);
         if (request.getSession().getAttribute("user") == null){
             response.sendRedirect("/admin");
-            Long nRead = cservice.unreadCount();
-            Long mRead = mservice.unreadCount();
-            Long unread = nRead + mRead;
-            request.getSession().setAttribute("unread",unread);
+
             return false;
         }
         return true;

@@ -32,6 +32,7 @@ public class BlogService {
    public Blog getBlog(Long id){
      return blogMapper.selectByPrimaryKey(id);
     }
+    //查询博客
     public  PageInfo<BlogDTO> listBlog(BlogDTO blogDTO){
        BlogExample blogExample = new BlogExample();
        if (StringUtils.isNotBlank(blogDTO.getTitle()) && blogDTO.getTypeid()!= null && blogDTO.isRecommend()==true){
@@ -66,6 +67,7 @@ public class BlogService {
     }
     @Transactional
     public int saveBlog(BlogDTO blogDTO){
+       //判断是blogId为空时，是新增博客
        if (blogDTO.getId()==null){
            Blog blog = new Blog();
            BeanUtils.copyProperties(blogDTO,blog);
@@ -80,6 +82,7 @@ public class BlogService {
            blog.setPublish(blogDTO.isPublish());
            return blogMapper.insert(blog);
        }
+       //这是修改博客的内容
           else {
               Blog blog = getBlog(blogDTO.getId());
               blog.setTitle(blogDTO.getTitle());
@@ -98,13 +101,14 @@ public class BlogService {
               return blogMapper.updateByPrimaryKeySelective(blog);
        }
     }
+    //删除博客的内容
     public void deleteBlog(Long id){
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria().andBlogIdEqualTo(id);
        commentMapper.deleteByExample(commentExample);
         blogMapper.deleteByPrimaryKey(id);
     }
-
+    //根据分类的类型  查询相关的博客
     public PageInfo<BlogDTO> listType() {
        List<Blog> blogs = blogExtMapper.list();
        List<BlogDTO> list = new ArrayList<>();
@@ -119,7 +123,7 @@ public class BlogService {
        PageInfo<BlogDTO> pageInfo = new PageInfo<>(list);
        return pageInfo;
     }
-
+//根据页面所需要的内容传给界面
     public BlogDTO getBlogDto(Long id) {
        Blog blog = getBlog(id);
        BlogDTO blogDTO = new BlogDTO();
@@ -138,11 +142,12 @@ public class BlogService {
         blogDTO.init();
        return blogDTO;
     }
-
+    //显示所有的博客
     public PageInfo<Blog> list() {
       List<Blog>  blog = blogExtMapper.listBy();
       return new PageInfo<>(blog);
     }
+    //这是博客首页根据 博客标题和内容的一个查询
     public PageInfo<BlogDTO> listBlogQuery(String query) {
         List<Blog>  blogs = blogExtMapper.listByQuery(query);
         List<BlogDTO> list = new ArrayList<>();
@@ -157,6 +162,7 @@ public class BlogService {
         PageInfo<BlogDTO> pageInfo = new PageInfo<>(list);
         return pageInfo;
    }
+   //通过tagids  获取每个tags
    public List<Tag> getTags(String tagIds){
        List<Tag> list = new ArrayList<>();
        String str[] = StringUtils.split(tagIds,",");
@@ -168,6 +174,7 @@ public class BlogService {
        }
        return list;
    }
+   //获取博客的详情
     public BlogDTO getAndConvert(Long id) {
 
         Blog blog1 =  new Blog();
@@ -195,7 +202,7 @@ public class BlogService {
 
         return blogDTO;
     }
-
+   //首页中统计每个type类中  所含的文章
     public PageInfo<BlogDTO> getBlogByTypeId(Long id) {
        BlogExample blogExample = new BlogExample();
        blogExample.createCriteria().andTypeidEqualTo(id);
@@ -212,7 +219,7 @@ public class BlogService {
        PageInfo<BlogDTO> pageInfo =  new PageInfo<>(blogDTOS);
        return pageInfo;
     }
-
+     //归档博客的显示
       public   Map<String,List<Blog>> archiveBlog(){
             List<String> years = blogExtMapper.stringListYear();
             Map<String,List<Blog>> map = new HashMap<>();
@@ -221,7 +228,7 @@ public class BlogService {
             }
             return map;
     }
-
+   //热门文章的显示
     public PageInfo<Blog> listByView() {
        List<Blog> blogs = blogExtMapper.list();
        PageInfo<Blog> pageInfo = new PageInfo<>(blogs);

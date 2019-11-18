@@ -1,6 +1,8 @@
 package com.lq.blog.controller.admin;
 
 import com.lq.blog.model.User;
+import com.lq.blog.service.CNotificationService;
+import com.lq.blog.service.MNotificationService;
 import com.lq.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,10 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private CNotificationService cservice;
+    @Autowired
+    private MNotificationService mservice;
     @GetMapping
     public String loginPage(){
       return "admin/login";
@@ -27,6 +33,10 @@ public class LoginController {
                         HttpSession session,
                         RedirectAttributes attributes){
         User user = userService.checkUser(username,password);
+        Long nRead = cservice.unreadCount();
+        Long mRead = mservice.unreadCount();
+        Long unread = nRead + mRead;
+        session.setAttribute("unread",unread);
         if (user != null && user.getType()==1l){
             user.setPassword(null);
             session.setAttribute("user",user);

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../static/lib/prism/prism.css" th:href="@{/lib/prism/prism.css}" />
     <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css" th:href="@{/lib/tocbot/tocbot.css}"/>
     <link rel="stylesheet" href="../../static/lib/editormd/css/editormd.min.css" th:href="@{/lib/editormd/css/editormd.min.css}">
+    <link rel="stylesheet" href="../../static/lib/editormd/css/editormd.preview.min.css" th:href="@{/lib/editormd/css/editormd.preview.min.css}">
 </head>
 <body>
 <!--导航-->
@@ -104,6 +105,9 @@
     <script src="../static/lib/qrcode/qrcode.min.js" th:src="@{/lib/qrcode/qrcode.min.js}"></script>
     <script src="../static/lib/waypoint/jquery.waypoints.min.js" th:src="@{/lib/waypoint/jquery.waypoints.min.js}"></script>
     <script src="../../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.min.js}"></script>
+    <script src="../../static/lib/editormd/lib/marked.min.js" th:src="@{/lib/editormd/lib/marked.min.js}"></script>
+    <script src="../../static/lib/editormd/lib/prettify.min.js" th:src="@{/lib/editormd/lib/prettify.min.js}"></script>
+    <script src="../../static/lib/editormd/plugins/image-dialog/image-dialog.js" th:src="@{/lib/editormd/plugins/image-dialog/image-dialog.js}"></script>
     <script>
         $('#out').click(function () {
             if (confirm("确认退出登录吗!")) {

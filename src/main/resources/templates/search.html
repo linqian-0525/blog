@@ -86,16 +86,16 @@
 		   <div class="ui bottom attached segment">
 			   <div class="ui middle aligned four column grid">
 				   <div class="column">
-					   <a class="ui primary basic button" th:href="@{/}">首页</a>
+					   <a class="ui primary basic button" th:href="@{/search}">首页</a>
 				   </div>
 				   <div class="column">
-					   <a class="ui primary basic button" th:href="@{/(page=${page.prePage})}">上一页</a>
+					   <a class="ui primary basic button" th:href="@{/search(page=${page.prePage})}">上一页</a>
 				   </div>
 				   <div class="right aligned column">
-					   <a class="ui primary basic button" th:href="@{/(page=${page.nextPage})}">下一页</a>
+					   <a class="ui primary basic button" th:href="@{/search(page=${page.nextPage})}">下一页</a>
 				   </div>
 				   <div class="right aligned column">
-					   <a class="ui primary basic button" th:href="@{/(page=${page.pages})}">尾页</a>
+					   <a class="ui primary basic button" th:href="@{/search(page=${page.pages})}">尾页</a>
 				   </div>
 			   </div>
 		   </div>

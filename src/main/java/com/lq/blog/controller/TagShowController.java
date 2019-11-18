@@ -22,17 +22,19 @@ public class TagShowController {
     @GetMapping("/tags/{id}")
     public String tags(@PathVariable Long id, Model model, @RequestParam(defaultValue = "1",value = "page") Integer page){
         List<TagDto> tagDtos = tagService.tagDTO();
+        Long s = id;
        if (id == -1){
            id = tagDtos.get(0).getId();
+           s=id;
        }
         model.addAttribute("tags",tagDtos);
-        PageHelper.startPage(page,6);
-        PageInfo<BlogDTO> pageInfo=  tagService.pageQueryById(id);
+        PageHelper.startPage(page,100);
+        PageInfo<BlogDTO> pageInfo=  tagService.pageQueryById(s);
         pageInfo.setPrePage(page-1);
         pageInfo.setNextPage(page+1);
-        pageInfo.setPages(pageInfo.getSize()/6);
+      //  pageInfo.setPages(pageInfo.getSize()/6);
         model.addAttribute("page",pageInfo);
-        model.addAttribute("activeTypeId",id);
+        model.addAttribute("activeTypeId",s);
         return "tags";
     }
 }

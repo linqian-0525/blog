@@ -33,6 +33,14 @@ public class BlogController {
     private TypeService typeService;
     @Autowired
     private TagService tagService;
+
+    /**
+     *
+     * 管理博客列表的展示
+     * @param model
+     * @param page
+     * @return
+     */
     @GetMapping("/blogs")
     public String blogs(Model model,
                         @RequestParam(defaultValue = "1",value = "page") Integer page){
@@ -48,6 +56,14 @@ public class BlogController {
         model.addAttribute("types",typeExtMapper.list());
         return "admin/blogs";
     }
+
+    /**
+     * 博客条件的查询
+     * @param model
+     * @param blogDTO
+     * @param pageNum
+     * @return
+     */
     @PostMapping("/blogs/search")
     public String search(Model model, BlogDTO blogDTO,
                         @RequestParam(defaultValue = "1",value = "page") Integer pageNum){
@@ -57,6 +73,12 @@ public class BlogController {
         model.addAttribute("page",pageInfo);
         return "admin/blogs :: blogList";
     }
+
+    /**
+     * 博客的修改的界面
+     * @param model
+     * @return
+     */
     @GetMapping("/blogs/input")
     public String input(Model model){
         model.addAttribute("blog",new BlogDTO());
@@ -64,6 +86,13 @@ public class BlogController {
         model.addAttribute("tags",tagExtMapper.list());
         return "error/blogs-input";
     }
+
+    /**
+     * 博客内容的修改
+     * @param model
+     * @param id
+     * @return
+     */
     @GetMapping("/blogs/{id}/input")
     public String editInput(Model model,@PathVariable Long id){
         BlogDTO blogDTO = blogService.getBlogDto(id);
@@ -72,6 +101,14 @@ public class BlogController {
         model.addAttribute("tags",tagExtMapper.list());
         return "error/blogs-input";
     }
+
+    /**
+     * 博客的新增
+     * @param blogDTO
+     * @param session
+     * @param attributes
+     * @return
+     */
     @PostMapping("/blogs")
     public String post(BlogDTO blogDTO, HttpSession session,
                        RedirectAttributes attributes){
@@ -88,6 +125,9 @@ public class BlogController {
 
         return "redirect:/admin/blogs";
     }
+    /**
+     * 博客的删除
+     */
     @GetMapping("/blogs/{id}/delete")
     public String delete(@PathVariable Long id,RedirectAttributes attributes){
         blogService.deleteBlog(id);
