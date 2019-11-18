@@ -37,7 +37,7 @@
   <select id="count"  resultType="java.lang.Integer">
     select
     count(*)
-    from blogs
+    from blogs where publish=true
   </select>
   <select id="listByQuery"  resultMap="BaseResultMap">
     select

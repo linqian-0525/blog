@@ -84,6 +84,7 @@ public class BlogService {
            blog.setFlags(blogDTO.getFlags());
            blog.setDescription(blogDTO.getDescription());
            blog.setTagIds(blogDTO.getTagIds());
+
            blog.setPublish(blogDTO.isPublish());
            return blogMapper.insert(blog);
        }
@@ -114,7 +115,7 @@ public class BlogService {
         blogMapper.deleteByPrimaryKey(id);
     }
     //根据分类的类型  查询相关的博客
-    public PageInfo<BlogDTO> listType() {
+    public PageInfo<BlogDTO> listType(int i) {
        List<Blog> blogs = blogExtMapper.list();
        List<BlogDTO> list = new ArrayList<>();
        for (Blog blog : blogs){
@@ -123,7 +124,12 @@ public class BlogService {
            Type type = typeMapper.selectByPrimaryKey(blog.getTypeid());
            blogDTO.setUser(userMapper.selectByPrimaryKey(blog.getUserid()));
            blogDTO.setType(type);
-           list.add(blogDTO);
+           if (blog.getPublish()==true && i==1 ){
+               list.add(blogDTO);
+           }
+           else if(i==0){
+               list.add(blogDTO);
+           }
        }
        PageInfo<BlogDTO> pageInfo = new PageInfo<>(list);
        return pageInfo;
@@ -162,7 +168,10 @@ public class BlogService {
             Type type = typeMapper.selectByPrimaryKey(blog.getTypeid());
             blogDTO.setUser(userMapper.selectByPrimaryKey(blog.getUserid()));
             blogDTO.setType(type);
-            list.add(blogDTO);
+            if (blog.getPublish()==true)
+            {
+                list.add(blogDTO);
+            }
         }
         PageInfo<BlogDTO> pageInfo = new PageInfo<>(list);
         return pageInfo;
@@ -210,7 +219,7 @@ public class BlogService {
    //首页中统计每个type类中  所含的文章
     public PageInfo<BlogDTO> getBlogByTypeId(Long id) {
        BlogExample blogExample = new BlogExample();
-       blogExample.createCriteria().andTypeidEqualTo(id);
+       blogExample.createCriteria().andTypeidEqualTo(id).andPublishEqualTo(true);
        List<Blog> blogs = blogMapper.selectByExample(blogExample);
        List<BlogDTO> blogDTOS = new ArrayList<>();
        for (Blog blog :blogs){

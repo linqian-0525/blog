@@ -80,7 +80,7 @@ public class TypeService {
         for (Type type : types){
             TypeDto typeDto = new TypeDto();
             BlogExample blogExample = new BlogExample();
-            blogExample.createCriteria().andTypeidEqualTo(type.getId());
+            blogExample.createCriteria().andTypeidEqualTo(type.getId()).andPublishEqualTo(true);
             typeDto.setBlogList(blogMapper.selectByExample(blogExample));
             BeanUtils.copyProperties(type,typeDto);
             list.add(typeDto);
@@ -95,7 +95,7 @@ public class TypeService {
         for (Type type : types){
             TypeDto typeDto = new TypeDto();
             BlogExample blogExample = new BlogExample();
-            blogExample.createCriteria().andTypeidEqualTo(type.getId());
+            blogExample.createCriteria().andTypeidEqualTo(type.getId()).andPublishEqualTo(true);
             typeDto.setBlogList(blogMapper.selectByExample(blogExample));
             BeanUtils.copyProperties(type,typeDto);
             list.add(typeDto);

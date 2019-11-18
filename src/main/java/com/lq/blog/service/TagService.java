@@ -110,7 +110,7 @@ public class TagService {
            String str[] = StringUtils.split(blog.getTagIds(),",");
            for (int i = 0 ;i<=str.length-1;i++){
                Long s = Long.valueOf(str[i]);
-               if (s .equals(id) ){
+               if (s .equals(id)&&blog.getPublish()==true){
                    blogList.add(blog);
                }
            }
@@ -128,7 +128,10 @@ public class TagService {
             blogDTO.setUser(userMapper.selectByPrimaryKey(blog.getUserid()));
             blogDTO.setType(type);
             blogDTO.setTags(blogService.getTags(blog.getTagIds()));
-            blogDTOS.add(blogDTO);
+            if (blog.getPublish()==true){
+                blogDTOS.add(blogDTO);
+            }
+
         }
         PageInfo<BlogDTO> pageInfo = new PageInfo<>(blogDTOS);
         return pageInfo;

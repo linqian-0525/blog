@@ -46,7 +46,7 @@ public class BlogController {
                         @RequestParam(defaultValue = "1",value = "page") Integer page){
         String oderby="updatetime desc";
         PageHelper.startPage(page,5,oderby);
-        PageInfo<BlogDTO> pageInfo =  blogService.listType();
+        PageInfo<BlogDTO> pageInfo =  blogService.listType(0);
         if (page!=1){
             pageInfo.setPrePage(page-1);
         }
@@ -115,7 +115,6 @@ public class BlogController {
         blogDTO.setUser((User) session.getAttribute("user"));
         blogDTO.setType(typeService.getType(blogDTO.getType().getId()));
         blogDTO.setTags(tagService.listTag(blogDTO.getTagIds()));
-
         int i = blogService.saveBlog(blogDTO);
         if(i == 1){
             attributes.addFlashAttribute("message","恭喜你，操作成功啦");

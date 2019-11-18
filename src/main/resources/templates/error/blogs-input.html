@@ -219,11 +219,11 @@
 				on : 'hover'
 			});
 			$('#save-btn').click(function () {
-                $('[name="publish"]').val(true);
+                $('[name="publish"]').val(false);
                 $('#blog-form').submit();
             });
         $('#publish-btn').click(function () {
-            $('[name="publish"]').val(false);
+            $('[name="publish"]').val(true);
             $('#blog-form').submit();
         });
 			$('.ui.form').form({

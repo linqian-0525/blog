@@ -32,7 +32,7 @@ public class IndexController {
     public String index( Model model,
                          @RequestParam(defaultValue = "1",value = "page") Integer page){
             PageHelper.startPage(page,6);
-            PageInfo<BlogDTO> pageInfo =  blogService.listType();
+            PageInfo<BlogDTO> pageInfo =  blogService.listType(1);
             Integer i = blogExtMapper.count();
             if (page!=1){
                 pageInfo.setPrePage(page-1);
