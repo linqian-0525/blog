@@ -52,7 +52,12 @@ public class BlogService {
             blogExample.createCriteria().andTitleLike("%"+blogDTO.getTitle()+"%")
                     .andRecommendEqualTo(blogDTO.isRecommend());
         }
-
+       if (StringUtils.isBlank(blogDTO.getTitle()) && blogDTO.getTypeid()!=null && blogDTO.isRecommend()==false){
+           blogExample.createCriteria().andTypeidEqualTo(blogDTO.getTypeid()).andRecommendEqualTo(blogDTO.isRecommend());
+       }
+        if (StringUtils.isBlank(blogDTO.getTitle()) && blogDTO.getTypeid()!=null && blogDTO.isRecommend()==true){
+            blogExample.createCriteria().andTypeidEqualTo(blogDTO.getTypeid()).andRecommendEqualTo(blogDTO.isRecommend());
+        }
        List<Blog> lists = blogMapper.selectByExample(blogExample);
        List<BlogDTO> dtoList = new ArrayList<>();
        for (Blog blog : lists){

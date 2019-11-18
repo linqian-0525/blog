@@ -76,4 +76,11 @@ public class UserService {
         }
         return userMapper.updateByPrimaryKeySelective(user);
     }
+
+    public void editPassword(Long id, String password) {
+        User user = userMapper.selectByPrimaryKey(id);
+        user.setPassword(MD5Utils.code(password));
+        userMapper.updateByPrimaryKey(user);
+
+    }
 }

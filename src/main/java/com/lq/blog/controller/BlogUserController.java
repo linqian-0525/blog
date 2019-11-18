@@ -3,6 +3,7 @@ package com.lq.blog.controller;
 import com.lq.blog.mapper.UserExtMapper;
 import com.lq.blog.model.User;
 import com.lq.blog.service.UserService;
+import com.lq.blog.util.MD5Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,7 +67,7 @@ public class BlogUserController {
         }
         else {
             user.setUsername(username);
-            user.setPassword("fcea920f7412b5da7be0cf42b8c93759");
+            user.setPassword(MD5Utils.code(password));
             user.setNickname(nickname);
             user.setEmail(email);
             user.setAvatar(avatar);
@@ -98,5 +99,31 @@ public class BlogUserController {
           attributes.addFlashAttribute("message","恭喜你修改成功了");
       }
         return "redirect:/";
+    }
+    //修改密码功能
+    @GetMapping("/user/password")
+    public String editPassword(){
+        return "eiditpassword";
+    }
+    @PostMapping("/edit/password")
+    public String password(@RequestParam String oldPassword,
+                           @RequestParam String password,
+                           HttpSession session,Model model,RedirectAttributes attributes){
+       User user = (User) session.getAttribute("user");
+       String s = MD5Utils.code(oldPassword);
+       if (!user.getPassword().equals(s)){
+           model.addAttribute("error","输入的旧密码错误");
+           return "eiditpassword";
+       }
+       if (oldPassword .equals(password)){
+           model.addAttribute("error","新密码不能和旧密码一致");
+           return "eiditpassword";
+       }
+       else {
+           userService.editPassword(user.getId(),password);
+           attributes.addFlashAttribute("message","恭喜你，修改密码成功后需要重新登录哦！");
+           session.removeAttribute("user");
+           return "redirect:/";
+       }
     }
 }
