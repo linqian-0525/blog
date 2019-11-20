@@ -47,13 +47,14 @@ public class CommentController {
                  comment.setAdminComment(true);
              }else {
                  comment.setAdminComment(false);
+                 session.setAttribute("manage","评论已经成功，评论需要提交给管理员审核哦！通过了才能在页面显示哦");
              }
            comment.setNickname(user.getNickname());
          }
          else if (user == null && user1==null){
              comment.setAdminComment(false);
              comment.setAvatar(avatar);
-             session.setAttribute("manage","没有注册的用户，评论需要提交给管理员审核哦！");
+             session.setAttribute("manage","评论已经成功，评论需要提交给管理员审核哦！通过了才能在页面显示哦");
          }
         else if (user1 != null){
              if (user1.getType()==1l)
@@ -61,6 +62,7 @@ public class CommentController {
                  comment.setAdminComment(true);
              }else {
                  comment.setAdminComment(false);
+                 session.setAttribute("manage","评论已经成功，评论需要提交给管理员审核哦！通过了才能在页面显示哦");
              }
              comment.setAvatar(user1.getAvatar());
          }

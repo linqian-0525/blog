@@ -41,14 +41,16 @@ public class CommentService {
         comment.setCreateTime(new Date());
         comment.setAdminComment(commentDTO.getAdminComment());
         User user =  userExtMapper.findByNameAndEmain(commentDTO.getNickname(),commentDTO.getEmail());
-        if (user == null) {
-            comment.setState(0);
-            comment.setAvatar(commentDTO.getAvatar());
-            comment.setNickname("匿名游客");
-        }else {
+        if (commentDTO.getAdminComment()==true)
+        {
             comment.setState(1);
             comment.setNickname(commentDTO.getNickname());
             comment.setAvatar(commentDTO.getAvatar());
+        }
+       else  {
+            comment.setState(0);
+            comment.setAvatar(commentDTO.getAvatar());
+            comment.setNickname(commentDTO.getNickname());
         }
         notification(comment);
         return commentMapper.insert(comment);
