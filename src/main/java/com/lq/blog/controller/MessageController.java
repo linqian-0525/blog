@@ -28,8 +28,8 @@ public class MessageController {
     private MessageService messageService;
     @GetMapping("/messages")
     public String getMessage(Model model, @RequestParam(defaultValue = "1",value = "page") Integer page,HttpSession session){
-
-        PageHelper.startPage(page,5);
+        String order = "create_time desc";
+        PageHelper.startPage(page,5,order);
         PageInfo<MessageDTO> pageInfo = new PageInfo<>(messageService.listMessage());
             pageInfo.setNextPage(page+1);
             pageInfo.setPrePage(page-1);

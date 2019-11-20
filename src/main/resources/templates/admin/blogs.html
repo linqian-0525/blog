@@ -86,6 +86,7 @@
                             <th>类型</th>
                             <th>推荐</th>
                             <th>状态</th>
+							<th>发布时间</th>
                             <th>更新时间</th>
                             <th>操作</th>
                         </tr>
@@ -97,7 +98,8 @@
                             <th th:text="${blog.type.name}">类型</th>
                             <th th:text="${blog.recommend} ? '是':'否'">是</th>
                             <th th:text="${blog.publish} ? '发布':'草稿'">草稿</th>
-                            <th th:text="${#dates.format(blog.createtime,'yyyy-MM-dd')}">更新时间</th>
+                            <th th:text="${#dates.format(blog.createtime,'yyyy-MM-dd')}">发布时间</th>
+							<th th:text="${#dates.format(blog.updatetime,'yyyy-MM-dd')}">更新时间</th>
                             <td>
                                 <a href="#" th:href="@{/admin/blogs/{id}/input(id=${blog.id})}" class="ui mini teal basic button">编辑</a>
                                 <a href="#" th:onclick="'javascript:deleteUser('+${blog.id}+')' " class="ui mini red basic button">删除</a>

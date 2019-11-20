@@ -55,7 +55,6 @@
                             <th>用户名</th>
                             <th>评论内容</th>
                             <th>评论日期</th>
-                            <th>审核状态</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -64,7 +63,6 @@
 							<th th:text="${comment.nickname}">类型</th>
 							<th th:text="${comment.content}">评论内容</th>
 							<th th:text="${#dates.format(comment.createTime,'yyyy-MM-dd')}">2019.11.03</th>
-                            <th >未审核</th>
                             <td>
 								<a href="#" th:href="@{/admin/messagemange/{id}/input(id=${comment.id})}" class="ui mini teal basic button">同意</a>
 								<a href="#" th:href="@{/admin/messagemange/{id}/reject(id=${comment.id})}" class="ui mini red basic button">拒绝</a>
