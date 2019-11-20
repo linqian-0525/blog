@@ -34,6 +34,13 @@
                                       <input type="password" name="password" placeholder="密码">
                                   </div>
                               </div>
+                              <div class="field">
+                                  <div class="ui left icon input">
+                                      <i class="paper plane outline icon"></i>
+                                      <input type="text" name="code" placeholder="验证码">
+                                      <img onclick="javascript:getvCode()" id="verifyimg" style="margin-left: 20px;"/>
+                                  </div>
+                              </div>
                               <button class="ui fluid  teal submit button">登录</button>
                               <div class="field">
                                   <a href="#" th:href="@{/user/sign}">注册</a>
@@ -73,6 +80,27 @@
                    }
                }
            });
+           getvCode();
+
+           /**
+            * 获取验证码
+            * 将验证码写到login.html页面的id = verifyimg 的地方
+            */
+           function getvCode() {
+               document.getElementById("verifyimg").src = timestamp("http://127.0.0.1:8887/verifyCode");
+           }
+           //为url添加时间戳
+           function timestamp(url) {
+               var getTimestamp = new Date().getTime();
+               if (url.indexOf("?") > -1) {
+                   url = url + "&timestamp=" + getTimestamp
+               } else {
+                   url = url + "?timestamp=" + getTimestamp
+               }
+               return url;
+           };
+
+
        </script>
 	</body>
 </html>

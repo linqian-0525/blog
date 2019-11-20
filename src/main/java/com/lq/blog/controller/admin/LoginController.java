@@ -1,5 +1,7 @@
 package com.lq.blog.controller.admin;
 
+import com.lq.blog.mapper.CodeMapper;
+import com.lq.blog.model.Code;
 import com.lq.blog.model.User;
 import com.lq.blog.service.CNotificationService;
 import com.lq.blog.service.MNotificationService;
@@ -22,6 +24,8 @@ public class LoginController {
     private CNotificationService cservice;
     @Autowired
     private MNotificationService mservice;
+    @Autowired
+    private CodeMapper mapper;
     @GetMapping
     public String loginPage(){
       return "admin/login";
@@ -30,6 +34,7 @@ public class LoginController {
     @PostMapping("/login")
     public String login( @RequestParam String username,
                          @RequestParam String password,
+                        @RequestParam String code,
                         HttpSession session,
                         RedirectAttributes attributes){
         User user = userService.checkUser(username,password);
@@ -37,13 +42,18 @@ public class LoginController {
         Long mRead = mservice.unreadCount();
         Long unread = nRead + mRead;
         session.setAttribute("unread",unread);
-        if (user != null && user.getType()==1l){
+        String verified = getCode();
+        if (user != null && user.getType()==1l && verified.equals(code)){
             user.setPassword(null);
             session.setAttribute("user",user);
             return "admin/index";
         }
-        if (user !=null && user.getType()!=1l){
-            attributes.addFlashAttribute("message","管理员才能够登录哦");
+        if (user !=null && user.getType()!=1l) {
+            attributes.addFlashAttribute("message", "管理员才能够登录哦");
+            return "redirect:/admin";
+        }
+        if (!verified.equals(code)){
+            attributes.addFlashAttribute("message", "验证码错误");
             return "redirect:/admin";
         }
         else
@@ -57,5 +67,9 @@ public class LoginController {
     public String logOut(HttpSession session){
       session.removeAttribute("user");
       return "redirect:/admin";
+    }
+    private String getCode() {
+        Code code =  mapper.selectByPrimaryKey(1);
+        return code.getCode();
     }
 }

@@ -1,29 +1,34 @@
 package com.lq.blog.controller;
 
+import com.lq.blog.dto.VerifyCode;
+import com.lq.blog.mapper.CodeMapper;
+import com.lq.blog.mapper.IVerifyCodeGen;
 import com.lq.blog.mapper.UserExtMapper;
+import com.lq.blog.model.Code;
 import com.lq.blog.model.User;
+import com.lq.blog.service.SimpleCharVerifyCodeGenImpl;
 import com.lq.blog.service.UserService;
 import com.lq.blog.util.MD5Utils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
+
 public class BlogUserController {
     @Autowired
     private UserService userService;
     @Autowired
     private UserExtMapper userExtMapper;
+    @Autowired
+    private CodeMapper mapper;
     @RequestMapping("/login")
     public String login(){
         return "login";
@@ -31,18 +36,31 @@ public class BlogUserController {
    @PostMapping("/user/login")
     public String userLogin(@RequestParam String username,
                             @RequestParam String password,
+                            @RequestParam String code,
                             HttpSession session,
                             RedirectAttributes attributes){
+        String verified = getCode();
+        if (!verified.equals(code)){
+            attributes.addFlashAttribute("message", "验证码错误");
+            return "redirect:/login";
+        }
        User user =  userService.userCheck(username,password);
        if (user != null) {
            session.setAttribute("user",user);
-       } else
-       {
-           attributes.addFlashAttribute("message","用户名和密码错误");
-           return "redirect:/login";
+           return "welcome";
        }
-        return "welcome";
+       else {
+               attributes.addFlashAttribute("message", "用户名和密码错误");
+               return "redirect:/login";
+       }
+
    }
+
+    private String getCode() {
+      Code code =  mapper.selectByPrimaryKey(1);
+      return code.getCode();
+    }
+
     @GetMapping("/user/logout")
     public String logOut(HttpSession session){
         session.removeAttribute("user");
@@ -125,5 +143,45 @@ public class BlogUserController {
            session.removeAttribute("user");
            return "redirect:/";
        }
+    }
+
+    /**获取验证码功能*/
+
+    @GetMapping("/verifyCode")
+    public void verifyCode(HttpServletRequest request, HttpServletResponse response) {
+        IVerifyCodeGen iVerifyCodeGen = new SimpleCharVerifyCodeGenImpl();
+        try {
+
+            VerifyCode verifyCode=  iVerifyCodeGen.generate(80, 28);
+           String code = verifyCode.getCode();
+           save(code);
+            //将VerifyCode绑定sessions
+            request.getSession().setAttribute("VerifyCode", code);
+            //设置响应头
+           response.setHeader("Pragma", "no-cache");
+            //设置响应头
+            response.setHeader("Cache-Control", "no-cache");
+            //在代理服务器端防止缓冲
+            response.setDateHeader("Expires", 0);
+            //设置响应内容类型
+            response.setContentType("image/jpeg");
+            response.getOutputStream().write(verifyCode.getImgBytes());
+            response.getOutputStream().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void save(String code) {
+        Code code1 = mapper.selectByPrimaryKey(1);
+        if (code1!=null){
+            code1.setCode(code);
+            mapper.updateByPrimaryKey(code1);
+        }
+        else {
+            code1.setId(1);
+            code1.setCode(code);
+            mapper.insert(code1);
+        }
     }
 }
