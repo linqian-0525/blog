@@ -167,7 +167,7 @@
 							</div>
 						</div>
 		</div>
-			<div id="comment-form" class="ui form">
+			<div id="comment-form" class="ui form" th:if="${blog.commentabled}">
 				<input type="hidden" name="blog.id" th:value="${blog.id}">
 				<input type="hidden" name="parentComment.id" value="-1">
 			   <div class="field">

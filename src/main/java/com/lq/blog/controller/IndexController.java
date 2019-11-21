@@ -43,8 +43,7 @@ public class IndexController {
             model.addAttribute("size",i);
             PageHelper.startPage(page,6);
             model.addAttribute("types",typeService.listTypeDTO());
-            String oeder = "view desc";
-            PageHelper.startPage(page,5,oeder);
+            PageHelper.startPage(page,5);
             model.addAttribute("tags",blogService.listByView());
             String oderBy = "updatetime desc";
             PageHelper.startPage(page,5,oderBy);

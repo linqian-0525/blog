@@ -35,14 +35,15 @@ public class MessageService {
             message.setParentMessageId(parentCommentId);
         }
         User user =  userExtMapper.findByNameAndEmain(messageDTO.getNickname(),messageDTO.getEmail());
-        if (user == null) {
-            message.setState(0);
-            message.setAvatar(messageDTO.getAvatar());
-            message.setNickname("匿名游客");
-        }else {
+        if (messageDTO.getAdminReply()==true){
             message.setState(1);
             message.setNickname(messageDTO.getNickname());
             message.setAvatar(messageDTO.getAvatar());
+        }
+        else{
+            message.setState(0);
+            message.setAvatar(messageDTO.getAvatar());
+            message.setNickname(messageDTO.getNickname());
         }
         message.setAdminReply(messageDTO.getAdminReply());
         message.setContent(messageDTO.getContent());

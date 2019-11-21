@@ -51,13 +51,15 @@ public class MessageController {
                 message.setAdminReply(true);
             }else {
                 message.setAdminReply(false);
+                session.setAttribute("manage","你已经留言成功了，管理员审核通过后，即可显示哦");
             }
             message.setNickname(user.getNickname());
         }
         else if (user == null && user1==null){
             message.setAdminReply(false);
             message.setAvatar(avatar);
-            session.setAttribute("manage","没有注册的用户，留言需要提交给管理员回复哦！");
+            message.setNickname("匿名游客");
+            session.setAttribute("manage","你已经留言成功了，管理员审核通过后，即可显示哦");
         }
         else if (user1 != null){
             if (user1.getType()==1l)

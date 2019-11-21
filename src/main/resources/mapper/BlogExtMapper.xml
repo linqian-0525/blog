@@ -32,7 +32,7 @@
     select
     *
     from blogs
-    where recommend=true
+    where recommend=true and publish=true
   </select>
   <select id="count"  resultType="java.lang.Integer">
     select

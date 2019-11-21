@@ -244,7 +244,10 @@ public class BlogService {
     }
    //热门文章的显示
     public PageInfo<Blog> listByView() {
-       List<Blog> blogs = blogExtMapper.list();
+       BlogExample example = new BlogExample();
+       example.createCriteria().andPublishEqualTo(true);
+       example.setOrderByClause("view desc");
+       List<Blog> blogs = blogMapper.selectByExample(example);
        PageInfo<Blog> pageInfo = new PageInfo<>(blogs);
        return pageInfo;
     }
