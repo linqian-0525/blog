@@ -25,7 +25,7 @@
                               <div class="field">
                                   <div class="ui left icon input">
                                       <i class="user icon"></i>
-                                      <input type="text" name="username" placeholder="用户名">
+                                      <input type="text" name="username" placeholder="用户名" id="name"  th:autocomplete="off">
                                   </div>
                               </div>
                               <div class="field">
@@ -37,13 +37,14 @@
                               <div class="field">
                                   <div class="ui left icon input">
                                       <i class="paper plane outline icon"></i>
-                                      <input type="text" name="code" placeholder="验证码">
+                                      <input type="text" name="code" placeholder="验证码" th:autocomplete="off">
                                       <img onclick="javascript:getvCode()" id="verifyimg" style="margin-left: 20px;"/>
                                   </div>
                               </div>
                               <button class="ui fluid  teal submit button">登录</button>
                               <div class="field">
-                                  <a href="#" th:href="@{/user/sign}">注册</a>
+                                  <a href="#" th:href="@{/user/sign}">注册</a>?
+                                  <a href="#" th:href="@{/user/forgot}">忘记密码</a>
                               </div>
                           </div>
                           <div class="ui  message" style="display: none"></div>
@@ -99,7 +100,11 @@
                }
                return url;
            };
-
+           function getName(a) {
+               var name = document.getElementById("name").value;
+              a.href="/user/forgot/{username}"+name;
+               
+           }
 
        </script>
 	</body>

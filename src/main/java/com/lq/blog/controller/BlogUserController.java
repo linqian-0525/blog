@@ -6,6 +6,7 @@ import com.lq.blog.mapper.IVerifyCodeGen;
 import com.lq.blog.mapper.UserExtMapper;
 import com.lq.blog.model.Code;
 import com.lq.blog.model.User;
+import com.lq.blog.service.ProblemService;
 import com.lq.blog.service.SimpleCharVerifyCodeGenImpl;
 import com.lq.blog.service.UserService;
 import com.lq.blog.util.MD5Utils;
@@ -29,6 +30,8 @@ public class BlogUserController {
     private UserExtMapper userExtMapper;
     @Autowired
     private CodeMapper mapper;
+    @Autowired
+    private ProblemService service;
     @RequestMapping("/login")
     public String login(){
         return "login";
@@ -67,7 +70,8 @@ public class BlogUserController {
         return "redirect:/";
     }
     @GetMapping("/user/sign")
-    public String profile(){
+    public String profile(Model model){
+       model.addAttribute("problems",service.list());
         return "sign";
     }
      @PostMapping("sign")
@@ -76,6 +80,8 @@ public class BlogUserController {
                        @RequestParam String nickname,
                        @RequestParam String email,
                        @RequestParam String avatar,
+                       @RequestParam int problemId,
+                       @RequestParam String answer,
                        Model model){
         User user = new User();
         if (userExtMapper.checkUserName(username) != null)
@@ -89,6 +95,8 @@ public class BlogUserController {
             user.setNickname(nickname);
             user.setEmail(email);
             user.setAvatar(avatar);
+            user.setProblemid(problemId);
+            user.setAnswer(answer);
             userService.save(user);
             model.addAttribute("error","恭喜你，添加成功，返回登录吧");
         }
@@ -183,5 +191,39 @@ public class BlogUserController {
             code1.setCode(code);
             mapper.insert(code1);
         }
+    }
+    /**忘记密码的功能*/
+    @GetMapping("/user/forgot")
+    public String forget(Model model){
+        model.addAttribute("problems",service.list());
+        return "forgot";
+    }
+    @PostMapping("/find/password")
+    public String findPassWord(@RequestParam String password,
+                               @RequestParam String username,
+                               @RequestParam int problemId,
+                               @RequestParam String answer,
+                               Model model,RedirectAttributes attributes){
+     User user=  service.checkUserName(username);
+     if (user==null){
+         attributes.addFlashAttribute("message","你输入的该用户不存在");
+         return "redirect:/user/forgot";
+
+     }
+     if (user.getProblemid()!=problemId) {
+         attributes.addFlashAttribute("message", "密保问题选择不正确");
+         return "redirect:/user/forgot";
+     }
+     if (!user.getAnswer().equals(answer)) {
+         attributes.addFlashAttribute("message", "你输入的答案错了哦");
+         return "redirect:/user/forgot";
+        }
+        else {
+        user.setPassword(MD5Utils.code(password));
+        service.updatePassword(user);
+         model.addAttribute("error", "你已经找回密码了，请返回登录吧");
+         return "forgot";
+     }
+
     }
 }
