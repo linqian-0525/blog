@@ -58,6 +58,7 @@ public class IndexController {
         model.addAttribute("blog",blogService.getAndConvert(id));
         model.addAttribute("like_account",service.likeAccount(id));
         model.addAttribute("dislike",service.disAlikeCount(id));
+        model.addAttribute("save_account",service.saveCount(id));
         model.addAttribute("id",id);
         return "blog";
     }

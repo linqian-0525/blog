@@ -22,40 +22,68 @@ public class ApproveController {
         if (user == null){
             model.addAttribute("id",id);
             attributes.addFlashAttribute("approve","登录后才能行使该功能哦");
-          return "redirect:/blog/"+id;
+          return "redirect:/blogs/"+id;
         }
         if (user !=null){
             Details details=  service.check(user.getId(),id,1);
          if (details==null){
              model.addAttribute("id",id);
              attributes.addFlashAttribute("approve","点赞成功");
-          return "redirect:/blog/"+id;
+          return "redirect:/blogs/"+id;
          }else {
              model.addAttribute("id",id);
              attributes.addFlashAttribute("approve","你已经表达过你的观点了，请不要重复表达");
-             return "redirect:/blog/"+id;
+             return "redirect:/blogs/"+id;
          }
         }
         model.addAttribute("id",id);
-        return "redirect:/blog/"+id;
+        return "redirect:/blogs/"+id;
+    }
+    @GetMapping("/blogs/{id}")
+    public String blog(@PathVariable Long id,Model model){
+        model.addAttribute("blog",service.getAndConvert(id));
+        model.addAttribute("like_account",service.likeAccount(id));
+        model.addAttribute("dislike",service.disAlikeCount(id));
+        model.addAttribute("save_account",service.saveCount(id));
+        model.addAttribute("id",id);
+        return "blog";
     }
     @GetMapping("/disaprrove/{id}")
     public String disapprove(@PathVariable Long id, Model model, HttpSession session, RedirectAttributes attributes){
         User user = (User) session.getAttribute("user");
         if (user == null){
             attributes.addFlashAttribute("approve","登录后才能行使该功能哦");
-            return "redirect:/blog/"+id;
+            return "redirect:/blogs/"+id;
         }
         if (user !=null){
             Details details = service.check(user.getId(),id,0);
             if (details==null){
                 attributes.addFlashAttribute("approve","踩一下成功");
-                return "redirect:/blog/"+id;
+                return "redirect:/blogs/"+id;
             }if (details !=null){
                 attributes.addFlashAttribute("approve","你已经表达过你的观点了，请不要重复表达");
-                return "redirect:/blog/"+id;
+                return "redirect:/blogs/"+id;
             }
         }
-        return "redirect:/blog/"+id;
+        return "redirect:/blogs/"+id;
+    }
+    @GetMapping("/save/{id}")
+    public String saveAccount(@PathVariable Long id, Model model, HttpSession session, RedirectAttributes attributes){
+        User user = (User) session.getAttribute("user");
+        if (user == null){
+            attributes.addFlashAttribute("approve","登录后才能行使该功能哦");
+            return "redirect:/blogs/"+id;
+        }
+        if (user !=null){
+            Details details = service.checkAccount(user.getId(),id,1);
+            if (details==null){
+                attributes.addFlashAttribute("approve","收藏成功");
+                return "redirect:/blogs/"+id;
+            }if (details !=null){
+                attributes.addFlashAttribute("approve","你已经收藏过该文章了");
+                return "redirect:/blogs/"+id;
+            }
+        }
+        return "redirect:/blogs/"+id;
     }
 }
