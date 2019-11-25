@@ -29,9 +29,7 @@
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table schema="DB2ADMIN" tableName="problem" domainObjectName="Problem" >
-        </table>
-        <table schema="DB2ADMIN" tableName="user" domainObjectName="User" >
+        <table schema="DB2ADMIN" tableName="details" domainObjectName="Details" >
         </table>
     </context>
 </generatorConfiguration>

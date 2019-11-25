@@ -6,6 +6,7 @@ import com.lq.blog.dto.BlogDTO;
 import com.lq.blog.mapper.BlogExtMapper;
 import com.lq.blog.mapper.TagExtMapper;
 import com.lq.blog.mapper.TypeExtMapper;
+import com.lq.blog.service.ApproveService;
 import com.lq.blog.service.BlogService;
 import com.lq.blog.service.TagService;
 import com.lq.blog.service.TypeService;
@@ -28,6 +29,8 @@ public class IndexController {
     private TagService tagService;
     @Autowired
     private BlogExtMapper blogExtMapper;
+    @Autowired
+    private ApproveService service;
     @GetMapping("/")
     public String index( Model model,
                          @RequestParam(defaultValue = "1",value = "page") Integer page){
@@ -53,6 +56,9 @@ public class IndexController {
     @GetMapping("/blog/{id}")
     public String blog(@PathVariable Long id,Model model){
         model.addAttribute("blog",blogService.getAndConvert(id));
+        model.addAttribute("like_account",service.likeAccount(id));
+        model.addAttribute("dislike",service.disAlikeCount(id));
+        model.addAttribute("id",id);
         return "blog";
     }
 

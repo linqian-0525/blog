@@ -52,6 +52,12 @@
 							</div>
 						</div>
 				</div>
+				<div class="ui  container">
+					<div class="ui warning message" th:if="${approve != null}">
+						<div class="header">提示:</div>
+						<p th:text="${approve}"></p>
+					</div>
+				</div>
 				<div class="ui attached segment">
 					<!--图片区域-->
 					<img th:src="@{${blog.firstpicture}}" src="https://picsum.photos/id/1/800/450?image=186" class="ui fluid rounded image">
@@ -81,15 +87,32 @@
 							<div class="ui orange basic label">
 								<div class="ui images" style="font-size: inherit !important;">
 									<div class="image">
-										<img src="static/img/wechat.jpg" th:src="@{/img/wechat.jpg}" alt="" class="ui rounded bordered image" style="width: 120px;">
+										<img src="../static/img/zhi_pay.png" th:src="@{/img/zhi_pay.png}" alt="" class="ui rounded bordered image" style="width: 120px;">
 										<div>支付宝支付</div>
 									</div>
 									<div class="image">
-										<img src="static/img/wechat.jpg" alt=""th:src="@{/img/wechat.jpg}" class="ui rounded bordered image" style="width: 120px;">
+										<img src="../static/img/wechat_pay.png" alt=""th:src="@{/img/wechat_pay.png}" class="ui rounded bordered image" style="width: 120px;">
 										<div>微信支付</div>
 									</div>
 								</div>
 							</div>
+						</div>
+					</div>
+					<!--th:if="${session.user}!=null"-->
+					<div class="ui center aligned basic segment">
+						<div th:fragment="likeList">
+						<span>
+							<a class="m-black" th:href="@{/aprrove/{id}(id=${id})}"><i class="big thumbs up outline icon"></i>顶一下</a>
+						</span>
+						[<span th:text="${like_account}">2</span>]
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+						<span><!--th:href="@{/disaprrove/{id}(id=${blog.id})}"-->
+							<a class="m-black" th:href="@{/disaprrove/{id}(id=${id})}"  href="#"><i class="big thumbs down outline  icon"></i>踩一下</a>
+						</span>
+						[<span th:text="${dislike}">2</span>]
 						</div>
 					</div>
 					</div>
@@ -349,7 +372,6 @@
             $(function () {
                 $("#comment-container").load(/*[[@{/comments/{id}(id=${blog.id})}]]*/"comments/6");
             });
-
             $('#commentpost-btn').click(function () {
                 var boo =  $('.ui.form').form('validate form');
                 if (boo){
