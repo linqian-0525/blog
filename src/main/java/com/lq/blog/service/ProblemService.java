@@ -1,15 +1,14 @@
 package com.lq.blog.service;
 
+import com.github.pagehelper.PageInfo;
 import com.lq.blog.mapper.ProblemMapper;
 import com.lq.blog.mapper.UserMapper;
-import com.lq.blog.model.Problem;
-import com.lq.blog.model.ProblemExample;
-import com.lq.blog.model.User;
-import com.lq.blog.model.UserExample;
+import com.lq.blog.model.*;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,4 +42,5 @@ public class ProblemService {
         example.createCriteria().andIdEqualTo(user.getId());
         userMapper.updateByPrimaryKeySelective(user);
     }
+
 }

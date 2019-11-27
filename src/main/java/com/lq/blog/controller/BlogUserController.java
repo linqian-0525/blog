@@ -1,11 +1,15 @@
 package com.lq.blog.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lq.blog.dto.VerifyCode;
 import com.lq.blog.mapper.CodeMapper;
 import com.lq.blog.mapper.IVerifyCodeGen;
 import com.lq.blog.mapper.UserExtMapper;
+import com.lq.blog.model.Blog;
 import com.lq.blog.model.Code;
 import com.lq.blog.model.User;
+import com.lq.blog.service.ApproveService;
 import com.lq.blog.service.ProblemService;
 import com.lq.blog.service.SimpleCharVerifyCodeGenImpl;
 import com.lq.blog.service.UserService;
@@ -32,6 +36,8 @@ public class BlogUserController {
     private CodeMapper mapper;
     @Autowired
     private ProblemService service;
+    @Autowired
+    private ApproveService approveService;
     @RequestMapping("/login")
     public String login(){
         return "login";
@@ -152,7 +158,38 @@ public class BlogUserController {
            return "redirect:/";
        }
     }
-
+    /**个人中心的代码*/
+    @GetMapping("/user/profile")
+    public String personalCenter(HttpSession session,
+                                 @RequestParam(defaultValue = "1",value = "page") Integer page,
+                                 Model model){
+        User user  = (User) session.getAttribute("user");
+        PageHelper.startPage(page,5);
+        PageInfo<Blog> pageInfo =approveService.queryBlog(user.getId());
+        if (page!=1){
+            pageInfo.setPrePage(page-1);
+        }
+        pageInfo.setNextPage(page+1);
+        pageInfo.setPages(3);
+        model.addAttribute("page",pageInfo);
+        return "profile";
+    }
+    /***/
+    @GetMapping("/user/mysave")
+    public String mySave(HttpSession session,
+                                 @RequestParam(defaultValue = "1",value = "page") Integer page,
+                                 Model model){
+        User user  = (User) session.getAttribute("user");
+        PageHelper.startPage(page,5);
+        PageInfo<Blog> pageInfo =approveService.querySaveBlog(user.getId());
+        if (page!=1){
+            pageInfo.setPrePage(page-1);
+        }
+        pageInfo.setNextPage(page+1);
+        pageInfo.setPages(3);
+        model.addAttribute("page",pageInfo);
+        return "mysave";
+    }
     /**获取验证码功能*/
 
     @GetMapping("/verifyCode")

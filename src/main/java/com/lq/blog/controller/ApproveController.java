@@ -86,4 +86,20 @@ public class ApproveController {
         }
         return "redirect:/blogs/"+id;
     }
+    /**取消点赞功能*/
+    @GetMapping("/cancel/approve/{id}")
+    public String cancelApprove(@PathVariable Long id,HttpSession session,RedirectAttributes attributes){
+        User user = (User) session.getAttribute("user");
+        service.cancelApprove(id,user.getId());
+        attributes.addFlashAttribute("message","取消点赞成功");
+        return "redirect:/user/profile";
+    }
+    /**取消点赞功能*/
+    @GetMapping("/cancel/save/{id}")
+    public String cancelSave(@PathVariable Long id,HttpSession session,RedirectAttributes attributes){
+        User user = (User) session.getAttribute("user");
+        service.cancelSave(id,user.getId());
+        attributes.addFlashAttribute("message","取消收藏成功");
+        return "redirect:/user/mysave";
+    }
 }

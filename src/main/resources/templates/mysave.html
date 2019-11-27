@@ -38,8 +38,8 @@
 					<div class="eleven wide column">
                             <div class="ui container" >
                                 <div class="ui menu">
-                                    <a href="#" class="active m-item item m-mobile-hide"  th:href="@{/user/profile}"><i class="thumbs up outline icon"></i>我的点赞</a>
-                                    <a href="#" class="m-item item  m-mobile-hide" th:href="@{/user/mysave}"><i class="plus square outline icon"></i>我的收藏</a>
+                                    <a href="#" class="m-item item m-mobile-hide"  th:href="@{/user/profile}"><i class="thumbs up outline icon"></i>我的点赞</a>
+                                    <a href="#" class="active m-item item  m-mobile-hide" th:href="@{/user/mysave}"><i class="plus square outline icon"></i>我的收藏</a>
                                    <!-- <a href="#" class="m-item item  m-mobile-hide" th:href="@{/user/profile}"><i class="comment outline icon"></i>我的评论</a>-->
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
 											<img src="https://picsum.photos/seed/picsum/190/140" th:src="@{${blog.firstpicture}}"  />
 										</a>
 										<div class="right aligned vertical five wide column m-padded-mini m-text-thin">
-											<a href="#"  class="ui red basic label" th:onclick="'javascript:deleteUser('+${blog.id}+')' "><i class="hand point down outline icon"></i>取消点赞</a>
+											<a href="#"  class="ui red basic label" th:onclick="'javascript:deleteUser('+${blog.id}+')' "><i class="calendar minus outline icon"></i>取消收藏</a>
 										</div>
 									</div>
 								</div>
@@ -71,10 +71,10 @@
 						<div class="ui bottom attached segment">
 							<div class="ui middle aligned two column grid">
 								<div class="column">
-									<a class="ui primary basic button" th:href="@{/user/profile(page=${page.prePage})}">上一页</a>
+									<a class="ui primary basic button" th:href="@{/user/mysave(page=${page.prePage})}">上一页</a>
 								</div>
 								<div class="right aligned column">
-									<a class="ui primary basic button" th:href="@{/user/profile(page=${page.nextPage})}">下一页</a>
+									<a class="ui primary basic button" th:href="@{/user/mysave(page=${page.nextPage})}">下一页</a>
 								</div>
 							</div>
 						</div>
@@ -148,16 +148,16 @@
 
 		<script>
             function deleteUser(id) {
-                if (confirm("确认取消点赞吗？")) {
-                    var url="/cancel/approve/"+ id;
+                if (confirm("确认取消收藏吗？")) {
+                    var url="/cancel/save/"+ id;
                     top.location.href=url;
                 } else {
                     location.reload();
                 }
             }
-			$('.menu.toggle').click(function(){
-				$('.m-item').toggleClass('m-mobile-hide');
-			});
+            $('.menu.toggle').click(function(){
+                $('.m-item').toggleClass('m-mobile-hide');
+            });
             $('.wechat').popup({
                 popup : $('.wechat-qr'),
                 position: 'bottom center'
@@ -168,7 +168,7 @@
                         .closest('.message')
                         .transition('fade');
                 });
-			$('.qq').popup();
+            $('.qq').popup();
 		</script>
 	</body>
 </html>

@@ -1,14 +1,13 @@
 package com.lq.blog.service;
 
+import com.github.pagehelper.PageInfo;
 import com.lq.blog.Exception.NotFoundException;
 import com.lq.blog.dto.BlogDTO;
+import com.lq.blog.mapper.BlogMapper;
 import com.lq.blog.mapper.DetailsMapper;
 import com.lq.blog.mapper.TypeMapper;
 import com.lq.blog.mapper.UserMapper;
-import com.lq.blog.model.Blog;
-import com.lq.blog.model.Details;
-import com.lq.blog.model.DetailsExample;
-import com.lq.blog.model.Tag;
+import com.lq.blog.model.*;
 import com.lq.blog.util.MarkdownUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -30,9 +29,11 @@ public class ApproveService {
     private UserMapper userMapper;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private BlogMapper blogMapper;
     public Details check(Long userId, Long blogId, int i){
         DetailsExample example = new DetailsExample();
-        example.createCriteria().andBlogIdEqualTo(blogId).andUserIdEqualTo(userId);
+        example.createCriteria().andBlogIdEqualTo(blogId).andUserIdEqualTo(userId).andLikeAccountIsNotNull();
         List<Details> list = mapper.selectByExample(example);
         if (list.size()==0){
             //进行插入数据
@@ -109,7 +110,7 @@ public class ApproveService {
 
     public Details checkAccount(Long userId, Long blogId, int i) {
         DetailsExample example = new DetailsExample();
-        example.createCriteria().andBlogIdEqualTo(blogId).andUserIdEqualTo(userId);
+        example.createCriteria().andBlogIdEqualTo(blogId).andUserIdEqualTo(userId).andSaveAccountIsNotNull();
         List<Details> list = mapper.selectByExample(example);
         if (list.size()==0){
             //进行插入数据
@@ -118,14 +119,49 @@ public class ApproveService {
             details.setUserId(userId);
             if (i==1){
                 details.setSaveAccount(1);
-            }else {
-                details.setSaveAccount(0);
             }
-
             mapper.insert(details);
             return null;}
         else {
             return list.get(0);
         }
+    }
+/**找点赞过的文章*/
+    public PageInfo<Blog> queryBlog(Long id) {
+        DetailsExample example =  new DetailsExample();
+        example.createCriteria().andUserIdEqualTo(id).andLikeAccountIsNotNull();
+        List<Details> detailsList = mapper.selectByExample(example);
+        List<Blog> list = new ArrayList<>();
+        for (Details d : detailsList){
+            Blog blog = blogMapper.selectByPrimaryKey(d.getBlogId());
+            list.add(blog);
+        }
+        PageInfo<Blog> pageInfo = new PageInfo<>(list);
+        return pageInfo;
+    }
+/**找收藏过的文章*/
+    public PageInfo<Blog> querySaveBlog(Long id) {
+        DetailsExample example =  new DetailsExample();
+        example.createCriteria().andUserIdEqualTo(id).andSaveAccountIsNotNull();
+        List<Details> detailsList = mapper.selectByExample(example);
+        List<Blog> list = new ArrayList<>();
+        for (Details d : detailsList){
+            Blog blog = blogMapper.selectByPrimaryKey(d.getBlogId());
+            list.add(blog);
+        }
+        PageInfo<Blog> pageInfo = new PageInfo<>(list);
+        return pageInfo;
+    }
+
+    public void cancelApprove(Long blogId, Long userId) {
+        DetailsExample example =  new DetailsExample();
+        example.createCriteria().andUserIdEqualTo(userId).andBlogIdEqualTo(blogId).andLikeAccountIsNotNull();
+        mapper.deleteByExample(example);
+    }
+
+    public void cancelSave(Long blogId, Long userId) {
+        DetailsExample example =  new DetailsExample();
+        example.createCriteria().andUserIdEqualTo(userId).andBlogIdEqualTo(blogId).andSaveAccountIsNotNull();
+        mapper.deleteByExample(example);
     }
 }
