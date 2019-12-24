@@ -94,7 +94,7 @@ public class ApproveController {
         attributes.addFlashAttribute("message","取消点赞成功");
         return "redirect:/user/profile";
     }
-    /**取消点赞功能*/
+    /**取消收藏功能*/
     @GetMapping("/cancel/save/{id}")
     public String cancelSave(@PathVariable Long id,HttpSession session,RedirectAttributes attributes){
         User user = (User) session.getAttribute("user");

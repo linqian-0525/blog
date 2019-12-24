@@ -43,25 +43,22 @@ public class MessageController {
     }
     @PostMapping("/messages")
     public String post(MessageDTO message, HttpSession session){
-       User user = (User) session.getAttribute("user");
+       User user = (User) session.getAttribute("user");//从session里面取出User
         User user1 =  userExtMapper.findByNameAndEmain(message.getNickname(),message.getEmail());
-        if (user != null ){
+        if (user != null ){//判断是有登录状态的用户
             message.setAvatar(user.getAvatar());
-            if (user.getType()==1l) {
+            if (user.getType()==1l) {//判断留言的人是否时管理员
                 message.setAdminReply(true);
             }else {
-                message.setAdminReply(false);
+                message.setAdminReply(false);//在留言成功后提示信息
                 session.setAttribute("manage","你已经留言成功了，管理员审核通过后，即可显示哦");
-            }
-            message.setNickname(user.getNickname());
-        }
-        else if (user == null && user1==null){
+            }message.setNickname(user.getNickname());
+        } else if (user == null && user1==null){//当User的值为null时即为匿名游客
             message.setAdminReply(false);
             message.setAvatar(avatar);
-            message.setNickname("匿名游客");
+            message.setNickname("匿名游客");//将用户名设置为匿名游客
             session.setAttribute("manage","你已经留言成功了，管理员审核通过后，即可显示哦");
-        }
-        else if (user1 != null){
+        } else if (user1 != null){
             if (user1.getType()==1l)
             {
                 message.setAdminReply(true);

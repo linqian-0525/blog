@@ -34,7 +34,8 @@ public class IndexController {
     @GetMapping("/")
     public String index( Model model,
                          @RequestParam(defaultValue = "1",value = "page") Integer page){
-            PageHelper.startPage(page,6);
+        String createTime = "createTime";
+            PageHelper.startPage(page,6,createTime);
             PageInfo<BlogDTO> pageInfo =  blogService.listType(1);
             Integer i = blogExtMapper.count();
             if (page!=1){
@@ -44,23 +45,23 @@ public class IndexController {
             pageInfo.setPages(i/6+1);
             model.addAttribute("page",pageInfo);
             model.addAttribute("size",i);
-            PageHelper.startPage(page,6);
+            PageHelper.startPage(1,6);
             model.addAttribute("types",typeService.listTypeDTO());
-            PageHelper.startPage(page,5);
+            PageHelper.startPage(1,5);
             model.addAttribute("tags",blogService.listByView());
             String oderBy = "updatetime desc";
-            PageHelper.startPage(page,5,oderBy);
+            PageHelper.startPage(1,5,oderBy);
             model.addAttribute("recommendBlogs",blogService.list());
             return "index";
     }
-    @GetMapping("/blog/{id}")
+    @GetMapping("/blog/{id}")//访问博客的详情的接口
     public String blog(@PathVariable Long id,Model model){
-        model.addAttribute("blog",blogService.getAndConvert(id));
-        model.addAttribute("like_account",service.likeAccount(id));
-        model.addAttribute("dislike",service.disAlikeCount(id));
-        model.addAttribute("save_account",service.saveCount(id));
+        model.addAttribute("blog",blogService.getAndConvert(id));//博客页面的显示
+        model.addAttribute("like_account",service.likeAccount(id));//点赞数的显示
+        model.addAttribute("dislike",service.disAlikeCount(id));//不喜欢数量的显示
+        model.addAttribute("save_account",service.saveCount(id));//收藏数量的显示
         model.addAttribute("id",id);
-        return "blog";
+        return "blog";//跳转到页面博客详情
     }
 
     @PostMapping("/search")

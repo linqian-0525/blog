@@ -43,21 +43,21 @@ public class LoginController {
         Long unread = nRead + mRead;
         session.setAttribute("unread",unread);
         String verified = getCode();
-        if (user != null && user.getType()==1l && verified.equals(code)){
+        if (user != null && user.getType()==1l && verified.equals(code)){//判断用户是否是管理员
             user.setPassword(null);
             session.setAttribute("user",user);
             return "admin/index";
         }
-        if (user !=null && user.getType()!=1l) {
+        if (user !=null && user.getType()!=1l) {//不是管理员时给予提示管理员才能够登录
             attributes.addFlashAttribute("message", "管理员才能够登录哦");
             return "redirect:/admin";
         }
-        if (!verified.equals(code)){
+        if (!verified.equals(code)){//输入的验证码验证
             attributes.addFlashAttribute("message", "验证码错误");
             return "redirect:/admin";
         }
         else
-            {
+            {//输入的密码错时给予的提示
               attributes.addFlashAttribute("message","用户名和密码错误");
              return "redirect:/admin";
         }

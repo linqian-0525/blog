@@ -3,7 +3,7 @@
 <head th:replace="_fragments :: head(~{::title})">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<meta charset="utf-8" />
-	<title>忘记密码</title>
+	<title>重置密码</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
 	<link rel="stylesheet"  href="../static/css/me.css" />
 </head>
@@ -16,45 +16,37 @@
 		<div class="ui container">
 			<div class="ui middle aligned center aligned grid">
 				<br>
-				<form id="blog-form" action="#" method="post" th:action="@{/find/password}" class="ui  form" style="max-width: 30em !important;">
+				<form id="blog-form" action="#" method="post" th:action="@{/reset}" class="ui  form" style="max-width: 30em !important;">
 					<div class="field">
-						<h3 class="ui teal aligned center header item">忘记密码</h3>
+						<h3 class="ui teal aligned center header item">重置密码</h3>
 					</div>
-					<div class="field">
-						<div class="ui left labeled input">
-							<label class="ui teal basic label">&nbsp;用户名&nbsp;&nbsp;&nbsp;</label>
-							<input type="text" name="username" placeholder="用户名" th:autocomplete="off"/>
-						</div>
-					</div>
+
 					<!--<div class="required field">
 						<div class="ui left labeled input">
 							<label class="ui teal basic label">&nbsp;&nbsp;&nbsp;&nbsp;email&nbsp;&nbsp;&nbsp;&nbsp;</label>
 							<input type="text" name="email" placeholder="请输入注册邮箱" th:autocomplete="off"/>
 						</div>
 					</div>-->
-					<div class="field">
-						<div class="ui type selection dropdown">
-							<input type="hidden" name="problemId" />
-							<i class="dropdown icon"></i>
-							<div class="default text">密保问题</div>
-							<div class="menu">
-								<div th:each="problem : ${problems}" class="item" th:data-value="${problem.id}" th:text="${problem.problem}">错误日志</div>
-							</div>
+					<div class="required field">
+						<div class="ui left labeled input">
+							<label class="ui teal basic label">&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+							<input type="password" name="password" placeholder="请输入新密码" />
 						</div>
 					</div>
 					<div class="required field">
 						<div class="ui left labeled input">
-							<label class="ui teal basic label">&nbsp;&nbsp;答&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;案</label>
-							<input type="text" name="answer" placeholder="请输入密保答案" th:autocomplete="off"/>
+							<label class="ui teal basic label">确认密码</label>
+							<input type="password" name="checkPassword" placeholder="确认密码" />
 						</div>
 					</div>
 					<div class="ui right aligned container">
-						<button type="button" class="ui button" onclick="window.history.go(-2)">返回</button>
-						<button type="button" class="ui teal submit button">验证</button>
+						<button type="button" class="ui button" onclick="window.history.go(-1)">返回</button>
+						<button type="button" class="ui teal submit button">修改</button>
 					</div>
 					<div class="ui success m-container-tiny" th:unless="${#strings.isEmpty(message)}">
 						<div class="header">提示:</div>
 						<p th:text="${message}">恭喜，操作成功</p>
+                        <a href="#" th:href="@{/}" class="ui mini teal basic button">返回首页</a>
 					</div>
 					<div class="ui error message"></div>
 					<div class="ui mini negative message"

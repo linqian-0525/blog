@@ -38,31 +38,30 @@ public class BlogUserController {
     private ProblemService service;
     @Autowired
     private ApproveService approveService;
-    @RequestMapping("/login")
+    @RequestMapping("/login")//请求登录页面的接口
     public String login(){
         return "login";
     }
-   @PostMapping("/user/login")
+   @PostMapping("/user/login")//请求登录的接口
     public String userLogin(@RequestParam String username,
                             @RequestParam String password,
                             @RequestParam String code,
                             HttpSession session,
-                            RedirectAttributes attributes){
+                            RedirectAttributes attributes){ //@RequestParam 该注释是请求的参数
         String verified = getCode();
         if (!verified.equals(code)){
-            attributes.addFlashAttribute("message", "验证码错误");
-            return "redirect:/login";
+            attributes.addFlashAttribute("message", "验证码错误");//输错验证码时给的提示
+            return "redirect:/login";//返回界面
         }
-       User user =  userService.userCheck(username,password);
+       User user =  userService.userCheck(username,password);//在userService调用 userCheck方法用户名和密码是否正确
        if (user != null) {
-           session.setAttribute("user",user);
-           return "welcome";
+           session.setAttribute("user",user);//该设置是为了保持登录状态1
+           return "welcome";//登录成功
        }
        else {
                attributes.addFlashAttribute("message", "用户名和密码错误");
-               return "redirect:/login";
+               return "redirect:/login";//登录失败后返回的错误信息
        }
-
    }
 
     private String getCode() {
@@ -75,10 +74,10 @@ public class BlogUserController {
         session.removeAttribute("user");
         return "redirect:/";
     }
-    @GetMapping("/user/sign")
+    @GetMapping("/user/sign")//注册的接口
     public String profile(Model model){
-       model.addAttribute("problems",service.list());
-        return "sign";
+       model.addAttribute("problems",service.list());//给页面添加密保问题的选择
+        return "sign";//跳转到注册的页面
     }
      @PostMapping("sign")
     public String sign(@RequestParam String username,
@@ -230,37 +229,36 @@ public class BlogUserController {
         }
     }
     /**忘记密码的功能*/
-    @GetMapping("/user/forgot")
+    @GetMapping("/user/forgot")//忘记密码的接口
     public String forget(Model model){
-        model.addAttribute("problems",service.list());
-        return "forgot";
+        model.addAttribute("problems",service.list());//选择当时设计的密保问题
+        return "forgot";//跳转到该界面
     }
-    @PostMapping("/find/password")
-    public String findPassWord(@RequestParam String password,
-                               @RequestParam String username,
-                               @RequestParam int problemId,
-                               @RequestParam String answer,
-                               Model model,RedirectAttributes attributes){
+    @PostMapping("/find/password")//密保验证接口
+    public String findPassWord(@RequestParam String username,@RequestParam int problemId,
+                               @RequestParam String answer, HttpSession session,RedirectAttributes attributes){
      User user=  service.checkUserName(username);
-     if (user==null){
+     if (user==null){//判断输入的用户名是否存在
          attributes.addFlashAttribute("message","你输入的该用户不存在");
-         return "redirect:/user/forgot";
-
+         return "redirect:/user/forgot";//当用户名不存在时给予的提示，并且返回信息给用户
      }
      if (user.getProblemid()!=problemId) {
          attributes.addFlashAttribute("message", "密保问题选择不正确");
-         return "redirect:/user/forgot";
+         return "redirect:/user/forgot";//选择注册时选择的密保问题，选择正确才可以
      }
      if (!user.getAnswer().equals(answer)) {
          attributes.addFlashAttribute("message", "你输入的答案错了哦");
-         return "redirect:/user/forgot";
+         return "redirect:/user/forgot";//输入密保的答案，正确了才可以重新设置密码
         }
-        else {
-        user.setPassword(MD5Utils.code(password));
-        service.updatePassword(user);
-         model.addAttribute("error", "你已经找回密码了，请返回登录吧");
-         return "forgot";
-     }
-
+        session.setAttribute("reset",username);
+        return "reset";//返回到重置密码的页面
+    }
+    @PostMapping("/reset")
+    public String reset(@RequestParam String password,HttpSession session,Model model){
+       String username = (String) session.getAttribute("reset");
+        User user=  service.checkUserName(username);
+        userService.editPassword(user.getId(),password);
+        model.addAttribute("message","重置密码成功了，请返回首页登录吧");
+        return "reset";
     }
 }

@@ -77,7 +77,7 @@ public class CommentService {
     }
 
     public  List<CommentDTO> listCommentByBlogId(Long blogId){
-      CommentExample commentExample = new CommentExample();
+      CommentExample commentExample = new CommentExample();//查找出没有审核过的评论信息
       commentExample.createCriteria().andBlogIdEqualTo(blogId).andStateEqualTo(1);
       List<Comment> comments = commentMapper.selectByExample(commentExample);
       List<CommentDTO> commentDTOList = new ArrayList<>();
@@ -89,7 +89,7 @@ public class CommentService {
               commentDTOList.add(commentDTO);
           }
       }
-      return commentDTOList;
+      return commentDTOList;//将结果返回给界面
     }
 
 
