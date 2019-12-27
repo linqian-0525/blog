@@ -88,6 +88,7 @@
 			</div>
 		</div>
 		<!--赞赏-->
+					<div class="eleven wide column">
 					<div th:if="${blog.appreciation}">
 						<div class="ui center aligned basic segment">
 							<button id="payButton" class="ui orange basic circular button">赞赏</button>
@@ -106,6 +107,16 @@
 								</div>
 							</div>
 						</div>
+						<div>
+
+						</div>
+					</div>
+					</div>
+					<div class="five wide column">
+						<div >
+							<a th:if="${lastBlog} != null" class="m-black" th:href="@{/blog/{id}(id=${lastBlog.id})}">上一篇:<span th:if="${lastBlog} != null" th:text="${lastBlog.title}">测试上一篇</span></a>
+						<div><br>
+						<div><a th:if="${nextBlog} != null"class="m-black" th:href="@{/blog/{id}(id=${nextBlog.id})}">下一篇:<span th:if="${nextBlog} != null" th:text="${nextBlog.title}">测试下一篇</span></a><div>
 					</div>
 
 					<div class="ui center aligned basic segment">
@@ -244,10 +255,11 @@
 	 <div id="qrcode" class="ui wechat-qr flowing popup transition hidden" style="width: 130px !important;">
 	   <!--<img src="static/img/wechat.jpg"class="ui rounded image" style="width: 120px !important" />-->
 	 </div>
+			</div>
  </br>
  </br>
 
-		<!--底部footer-->
+		<!--&lt;!&ndash;底部footer&ndash;&gt;
 	    <footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
 	    	<div class="ui center aligned container">
 	    		<div class="ui inverted divided stackable grid">
@@ -281,7 +293,7 @@
 	    		</div>
 	    	</div>
 
-	    </footer>
+	    </footer>-->
 
 
         <!--/*/<th:block th:replace="_fragments :: script">/*/-->

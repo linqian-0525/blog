@@ -50,4 +50,10 @@
     set view = view + #{view,jdbcType=BIGINT}
      where id = #{id}
   </update>
+  <select id="lastBlog" parameterType="java.lang.Long" resultMap="BaseResultMap">
+      select * from blogs where id&lt;#{id} order by id desc limit 1
+  </select>
+  <select id="nextBlog" parameterType="java.lang.Long" resultMap="BaseResultMap">
+      select * from blogs where id&gt;#{id} order by id  limit 1
+  </select>
 </mapper>

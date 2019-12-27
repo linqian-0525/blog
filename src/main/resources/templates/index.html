@@ -137,7 +137,14 @@
 				<!--标签-->
 					<div class="ui segments m-margin-top-large">
 						<div class="ui secondary segment">
-							<i class="heartbeat icon"></i>热门文章
+						<div class="ui two column grid">
+							<div class="column">
+								<i class="heartbeat icon"></i>热门文章
+							</div>
+							<div class="right aligned column">
+								<a href="#" target="_blank" th:href="@{hot}">more<i class="angle double right icon"></i></a>
+							</div>
+						</div>
 						</div>
 						<div class="ui segment" th:each="blog : ${tags.list}">
 							<a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="m-black m-text-thin" th:text="${blog.title}">用户故事</a>
@@ -146,9 +153,16 @@
 					</div>
 				<!--最新推荐-->
 					<div class="ui segments m-margin-top-large">
-						<div class="ui secondary segment">						
-							<i class="bookmark icon"></i>最新推荐
-						</div>	
+						<div class="ui secondary segment">
+							<div class="ui two column grid">
+								<div class="column">
+									<i class="bookmark icon"></i>最新推荐
+								</div>
+								<div class="right aligned column">
+									<a href="#" target="_blank" th:href="@{new}">more<i class="angle double right icon"></i></a>
+								</div>
+							</div>
+						</div>
 					    <div class="ui segment" th:each="blog : ${recommendBlogs.list}">
 					    	<a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="m-black m-text-thin" th:text="${blog.title}">用户故事</a>
 					    </div>

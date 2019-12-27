@@ -6,6 +6,7 @@ import com.lq.blog.dto.BlogDTO;
 import com.lq.blog.mapper.BlogExtMapper;
 import com.lq.blog.mapper.TagExtMapper;
 import com.lq.blog.mapper.TypeExtMapper;
+import com.lq.blog.model.Blog;
 import com.lq.blog.service.ApproveService;
 import com.lq.blog.service.BlogService;
 import com.lq.blog.service.TagService;
@@ -35,7 +36,7 @@ public class IndexController {
     public String index( Model model,
                          @RequestParam(defaultValue = "1",value = "page") Integer page){
         String createTime = "createTime";
-            PageHelper.startPage(page,6,createTime);
+            PageHelper.startPage(page,6);
             PageInfo<BlogDTO> pageInfo =  blogService.listType(1);
             Integer i = blogExtMapper.count();
             if (page!=1){
@@ -61,6 +62,19 @@ public class IndexController {
         model.addAttribute("dislike",service.disAlikeCount(id));//不喜欢数量的显示
         model.addAttribute("save_account",service.saveCount(id));//收藏数量的显示
         model.addAttribute("id",id);
+        Blog blog = blogExtMapper.lastBlog(id);
+        if (blog != null){
+            model.addAttribute("lastBlog",blog);
+        }else {
+            model.addAttribute("lastBlog",null);
+        }
+        Blog nextBlog = blogExtMapper.nextBlog(id);
+        if (nextBlog != null){
+            model.addAttribute("nextBlog",nextBlog);
+        }else {
+            model.addAttribute("nextBlog",null);
+        }
+        model.addAttribute("next",null);
         return "blog";//跳转到页面博客详情
     }
 
@@ -87,5 +101,37 @@ public class IndexController {
         PageHelper.startPage(page,3,orderBy);
         model.addAttribute("newblogs",blogExtMapper.list());
         return "_fragments :: newblogList";
+    }
+    @GetMapping("/hot")
+    public String hot(Model model,
+                      @RequestParam(defaultValue = "1",value = "page") Integer page){
+        String view = "view desc";
+        PageHelper.startPage(page,6,view);
+        PageInfo<BlogDTO> pageInfo = blogService.listType(1);
+        Integer i = blogExtMapper.count();
+        if (page!=1){
+            pageInfo.setPrePage(page-1);
+        }
+        pageInfo.setNextPage(page+1);
+        pageInfo.setPages(i/6+1);
+        model.addAttribute("size",i);
+        model.addAttribute("page",pageInfo);
+        return "hot";
+    }
+    @GetMapping("/new")
+    public String recommand(Model model,
+                      @RequestParam(defaultValue = "1",value = "page") Integer page){
+        String view = "createTime desc";
+        PageHelper.startPage(page,6,view);
+        PageInfo<BlogDTO> pageInfo = blogService.listType(1);
+        Integer i = blogExtMapper.count();
+        if (page!=1){
+            pageInfo.setPrePage(page-1);
+        }
+        pageInfo.setNextPage(page+1);
+        pageInfo.setPages(i/6+1);
+        model.addAttribute("size",i);
+        model.addAttribute("page",pageInfo);
+        return "new";
     }
 }

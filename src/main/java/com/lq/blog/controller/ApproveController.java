@@ -1,5 +1,7 @@
 package com.lq.blog.controller;
 
+import com.lq.blog.mapper.BlogExtMapper;
+import com.lq.blog.model.Blog;
 import com.lq.blog.model.Details;
 import com.lq.blog.model.User;
 import com.lq.blog.service.ApproveService;
@@ -16,6 +18,8 @@ import javax.servlet.http.HttpSession;
 public class ApproveController {
     @Autowired
     private ApproveService service;
+    @Autowired
+    private BlogExtMapper blogExtMapper;
     @GetMapping("/aprrove/{id}")
     public String approve(@PathVariable Long id, Model model, HttpSession session, RedirectAttributes attributes){
         User user = (User) session.getAttribute("user");
@@ -46,6 +50,18 @@ public class ApproveController {
         model.addAttribute("dislike",service.disAlikeCount(id));
         model.addAttribute("save_account",service.saveCount(id));
         model.addAttribute("id",id);
+        Blog blog = blogExtMapper.lastBlog(id);
+        if (blog != null){
+            model.addAttribute("lastBlog",blog);
+        }else {
+            model.addAttribute("lastBlog",null);
+        }
+        Blog nextBlog = blogExtMapper.nextBlog(id);
+        if (nextBlog != null){
+            model.addAttribute("nextBlog",nextBlog);
+        }else {
+            model.addAttribute("nextBlog",null);
+        }
         return "blog";
     }
     @GetMapping("/disaprrove/{id}")
