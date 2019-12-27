@@ -234,7 +234,7 @@ public class BlogService {
        return pageInfo;
     }
      //归档博客的显示
-      public   Map<String,List<Blog>> archiveBlog(){
+      public Map<String,List<Blog>> archiveBlog(){
             List<String> years = blogExtMapper.stringListYear();
             Map<String,List<Blog>> map = new HashMap<>();
             for (String year : years ){

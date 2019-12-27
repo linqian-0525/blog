@@ -208,7 +208,10 @@
                     width   : "100%",
                     height  : 640,
                     syncScrolling : "single",
-                    path    : "/lib/editormd/lib/"
+                    path    : "/lib/editormd/lib/",
+                    imageUpload    : true,
+                    imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                    imageUploadURL : "/file/upload",  //这个是上传图片时的访问地址
                 });
             });
 			$('.menu.toggle').click(function(){

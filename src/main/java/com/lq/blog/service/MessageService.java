@@ -84,7 +84,7 @@ public class MessageService {
         return messageDTOList;
     }
     //获得所有有parentId为该条的id的 message
-    private List<MessageDTO> ListMessageByParent(Long  id)
+     private List<MessageDTO> ListMessageByParent(Long  id)
     {
         MessageExample messageExample = new MessageExample();
         messageExample.createCriteria().andParentMessageIdEqualTo(id).andStateEqualTo(1);
@@ -95,7 +95,7 @@ public class MessageService {
             BeanUtils.copyProperties(m,messageDTO1);
             messageDTO1.setParentMessage(m);
             if (m.getParentMessageId()!=null){
-               messageDTO1.setReplyMessage(ListMessageByParent(m.getId()));
+                messageDTO1.setReplyMessage(ListMessageByParent(m.getId()));
             }
             messageDTOList.add(messageDTO1);
         }

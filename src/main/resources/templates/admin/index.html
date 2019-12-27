@@ -43,9 +43,9 @@
 			<div class="ui container">
 				<div class="ui success large message">
 					<h3>Hi,</h3>
-					<p>victoria_林,欢迎登录！</p>
+					<p th:text="${session.user.nickname}">victoria_林,欢迎登录！</p>
 				</div>
-                <img src="https://picsum.photos/id/1/1000/400?image=129" alt="" class="ui rounded bordered fluid image">
+                <img th:src="@{${session.user.avatar}}" alt="" class="ui rounded bordered fluid image">
 			</div> 
  	   </div>
 	    	
