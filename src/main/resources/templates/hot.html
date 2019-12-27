@@ -59,7 +59,7 @@
 															<div class="content"><a href="#" class="header" th:text="${blog.user.nickname}">victory_林</a></div>
 														</div>
 														<div class="item">
-															<i class="calendar alternate icon" ></i><span th:text="${#dates.format(blog.updatetime,'yyyy-MM-dd')}"></span>
+															<i class="calendar alternate icon" ></i><span th:text="${#dates.format(blog.createtime,'yyyy-MM-dd')}"></span>
 														</div>
 														<div class="item">
 															<i class="eye icon"></i><span th:text="${blog.view}">2342</span>
@@ -81,18 +81,12 @@
 							</div>
 						</div>
 		   <div class="ui bottom attached segment">
-			   <div class="ui middle aligned four column grid">
-				   <div class="column">
-					   <a class="ui primary basic button" th:href="@{'/hot/'}">首页</a>
-				   </div>
+			   <div class="ui middle aligned two column grid">
 				   <div class="column">
 					   <a class="ui primary basic button" th:href="@{'/hot/'(page=${page.prePage})}">上一页</a>
 				   </div>
 				   <div class="right aligned column">
 					   <a class="ui primary basic button" th:href="@{'/hot/'(page=${page.nextPage})}">下一页</a>
-				   </div>
-				   <div class="right aligned column">
-					   <a class="ui primary basic button" th:href="@{'/hot/'}">尾页</a>
 				   </div>
 			   </div>
 		   </div>

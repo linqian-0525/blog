@@ -32,7 +32,7 @@ public class TagShowController {
         PageInfo<BlogDTO> pageInfo=  tagService.pageQueryById(s);
         pageInfo.setPrePage(page-1);
         pageInfo.setNextPage(page+1);
-      //  pageInfo.setPages(pageInfo.getSize()/6);
+       pageInfo.setPages(3);
         model.addAttribute("page",pageInfo);
         model.addAttribute("activeTypeId",s);
         return "tags";

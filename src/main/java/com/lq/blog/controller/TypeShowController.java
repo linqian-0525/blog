@@ -34,7 +34,7 @@ public class TypeShowController {
         PageInfo<BlogDTO> pageInfo= blogService.getBlogByTypeId(id);
         pageInfo.setPrePage(page-1);
         pageInfo.setNextPage(page+1);
-        pageInfo.setPages(pageInfo.getSize()/6);
+        pageInfo.setPages(3);
         model.addAttribute("page",pageInfo);
         model.addAttribute("activeTypeId",id);
         return "types";
