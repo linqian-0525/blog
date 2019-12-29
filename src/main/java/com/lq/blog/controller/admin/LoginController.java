@@ -66,7 +66,7 @@ public class LoginController {
     @GetMapping("/logout")
     public String logOut(HttpSession session){
       session.removeAttribute("user");
-      return "redirect:/admin";
+      return "admin/login";
     }
     private String getCode() {
         Code code =  mapper.selectByPrimaryKey(1);

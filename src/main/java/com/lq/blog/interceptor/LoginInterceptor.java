@@ -1,5 +1,6 @@
 package com.lq.blog.interceptor;
 
+import com.lq.blog.model.User;
 import com.lq.blog.service.CNotificationService;
 import com.lq.blog.service.MNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         Long mRead = mservice.unreadCount();
         Long unread = nRead + mRead;
         request.getSession().setAttribute("unread",unread);
-        if (request.getSession().getAttribute("user") == null){
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null || user.getType()!= 1){
             response.sendRedirect("/admin");
 
             return false;
