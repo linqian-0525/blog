@@ -47,7 +47,7 @@
                             <a class="item m-black" id="out" th:href="@{/user/logout}">退出</a>
                             <a class="item m-black" th:href="@{/user/edit}">修改个人信息</a>
                             <a class="item m-black" th:href="@{/user/password}">修改密码</a>
-                            <a class="item m-black" th:href="@{/user/profile}">个人中心</a>
+                            <a  th:if="${session.user.type}!=1" class="item m-black" th:href="@{/user/profile}">个人中心</a>
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,8 @@
     <script>
         $('#out').click(function () {
             if (confirm("确认退出登录吗!")) {
-                top.location.href="/admin";
+                top.location.href="/logout";
+                location.reload();
             } else {
                 location.reload();
             }

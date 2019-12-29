@@ -27,7 +27,8 @@ public class LoginController {
     @Autowired
     private CodeMapper mapper;
     @GetMapping
-    public String loginPage(){
+    public String loginPage(HttpSession session){
+        session.removeAttribute("user");
       return "admin/login";
     }
 
@@ -66,7 +67,8 @@ public class LoginController {
     @GetMapping("/logout")
     public String logOut(HttpSession session){
       session.removeAttribute("user");
-      return "admin/login";
+      //session.invalidate();
+      return "redirect:/admin";
     }
     private String getCode() {
         Code code =  mapper.selectByPrimaryKey(1);
