@@ -35,7 +35,10 @@ public class ApproveService {
         DetailsExample example = new DetailsExample();
         example.createCriteria().andBlogIdEqualTo(blogId).andUserIdEqualTo(userId).andLikeAccountIsNotNull();
         List<Details> list = mapper.selectByExample(example);
-        if (list.size()==0){
+        DetailsExample example2 = new DetailsExample();
+        example2.createCriteria().andBlogIdEqualTo(blogId).andUserIdEqualTo(userId).andDisalikeCountIsNotNull();
+        List<Details> list2 = mapper.selectByExample(example2);
+        if (list.size()==0 && list2.size()==0){
             //进行插入数据
             Details details = new Details();
             details.setBlogId(blogId);
@@ -162,6 +165,25 @@ public class ApproveService {
     public void cancelSave(Long blogId, Long userId) {
         DetailsExample example =  new DetailsExample();
         example.createCriteria().andUserIdEqualTo(userId).andBlogIdEqualTo(blogId).andSaveAccountIsNotNull();
+        mapper.deleteByExample(example);
+    }
+
+    public PageInfo<Blog> queryDisLikeBlog(Long id) {
+        DetailsExample example =  new DetailsExample();
+        example.createCriteria().andUserIdEqualTo(id).andDisalikeCountIsNotNull();
+        List<Details> detailsList = mapper.selectByExample(example);
+        List<Blog> list = new ArrayList<>();
+        for (Details d : detailsList){
+            Blog blog = blogMapper.selectByPrimaryKey(d.getBlogId());
+            list.add(blog);
+        }
+        PageInfo<Blog> pageInfo = new PageInfo<>(list);
+        return pageInfo;
+    }
+
+    public void cancelDisLike(Long userId, Long blogId) {
+        DetailsExample example =  new DetailsExample();
+        example.createCriteria().andUserIdEqualTo(blogId).andBlogIdEqualTo(userId).andDisalikeCountIsNotNull();
         mapper.deleteByExample(example);
     }
 }

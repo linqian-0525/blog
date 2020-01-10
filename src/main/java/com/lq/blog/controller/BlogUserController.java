@@ -173,7 +173,7 @@ public class BlogUserController {
         model.addAttribute("page",pageInfo);
         return "profile";
     }
-    /***/
+    /**我的收藏功能*/
     @GetMapping("/user/mysave")
     public String mySave(HttpSession session,
                                  @RequestParam(defaultValue = "1",value = "page") Integer page,
@@ -188,6 +188,21 @@ public class BlogUserController {
         pageInfo.setPages(3);
         model.addAttribute("page",pageInfo);
         return "mysave";
+    }
+    /**不喜欢文章的功能*/
+    @GetMapping("/user/dislike")
+    public String disLike(HttpSession session,@RequestParam(defaultValue = "1",value = "page") Integer page,
+                          Model model){
+        User user  = (User) session.getAttribute("user");
+        PageHelper.startPage(page,5);
+        PageInfo<Blog> pageInfo =approveService.queryDisLikeBlog(user.getId());
+        if (page!=1){
+            pageInfo.setPrePage(page-1);
+        }
+        pageInfo.setNextPage(page+1);
+        pageInfo.setPages(3);
+        model.addAttribute("page",pageInfo);
+        return "dislike";
     }
     /**获取验证码功能*/
 

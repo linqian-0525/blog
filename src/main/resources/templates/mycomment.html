@@ -3,7 +3,7 @@
 <head th:replace="_fragments :: head(~{::title})">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta charset="utf-8"/>
-    <title>个人中心</title>
+    <title>我的评论</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
     <link rel="stylesheet" href="../static/css/me.css"/>
 </head>
@@ -31,66 +31,52 @@
         <i class="sidebar icon"></i>
     </a>
 </nav>
-<!--中间内容-->
 <div class="m-container-small m-padded-tb-big">
     <div class="ui container">
         <div class="ui stackable grid">
             <div class="eleven wide column">
-                <div class="ui container">
-                    <div class="ui menu">
-                        <a href="#" class="m-item item m-mobile-hide" th:href="@{/user/profile}"><i
-                                class="thumbs up outline icon"></i>我的点赞</a>
-                        <a href="#" class="active m-item item  m-mobile-hide" th:href="@{/user/mysave}"><i
-                                class="plus square outline icon"></i>我的收藏</a>
-                        <a href="#" class="m-item item  m-mobile-hide" th:href="@{/user/dislike}"><i
-                                class="thumbs down outline icon"></i>不喜欢</a>
-                        <a href="#" class="m-item item  m-mobile-hide" th:href="@{/user/comment}"><i
-                                class="keyboard icon"></i>我的评论</a>
-                        <!-- <a href="#" class="m-item item  m-mobile-hide" th:href="@{/user/profile}"><i class="comment outline icon"></i>我的评论</a>-->
-                    </div>
+            <div class="ui container">
+                <div class="ui menu">
+                    <a href="#" class="m-item item m-mobile-hide" th:href="@{/user/profile}"><i
+                            class="thumbs up outline icon"></i>我的点赞</a>
+                    <a href="#" class="m-item item  m-mobile-hide" th:href="@{/user/mysave}"><i
+                            class="plus square outline icon"></i>我的收藏</a>
+                    <a href="#" class=" m-item item  m-mobile-hide" th:href="@{/user/dislike}"><i
+                            class="thumbs down outline icon"></i>不喜欢</a>
+                    <a href="#" class="active m-item item  m-mobile-hide" th:href="@{/user/comment}"><i
+                            class="keyboard icon"></i>我的评论</a>
+                    <!-- <a href="#" class="m-item item  m-mobile-hide" th:href="@{/user/profile}"><i class="comment outline icon"></i>我的评论</a>-->
                 </div>
-                <div class="ui container">
-                    <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
-                        <i class="close icon"></i>
-                        <div class="header">提示:</div>
-                        <p th:text="${message}">恭喜，操作成功</p>
-                    </div>
+            </div>
+            <div class="ui container">
+                <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+                    <i class="close icon"></i>
+                    <div class="header">提示:</div>
+                    <p th:text="${message}">恭喜，操作成功</p>
                 </div>
-                <div class="ui attached segment">
-                    <div class="ui padded vertical segment m-padded-tb-large" th:each="blog:${page.list}">
-                        <div class="ui middle aligned mobile reversed stackable grid">
-                            <div class="ui ten wide column">
-                                <h3 class="ui header"><a href="#" target="_blank" class="m-black"
-                                                         th:href="@{/blog/{id}(id=${blog.id})}" th:text="${blog.title}">你理解真正的财富自由吗？</a>
-                                </h3>
-                                <p class="m-text" th:text="|${blog.description}......|">
-                                    正确做好任何一件事情的前提是清晰、正确的理解目标。而事实是，我们很多人很多时候根本没有对目标正确的定义，甚至根本从来就没有想过，只是大家都那么做而已…...</p>
-                            </div>
-                            <div class="ui six wide column">
-                                <a th:href="@{/blog/{id}(id=${blog.id})}" href="#" target="_blank">
-                                    <img src="https://picsum.photos/seed/picsum/190/140"
-                                         th:src="@{${blog.firstpicture}}"/>
-                                </a>
-                                <div class="right aligned vertical five wide column m-padded-mini m-text-thin">
-                                    <a href="#" class="ui red basic label"
-                                       th:onclick="'javascript:deleteUser('+${blog.id}+')' "><i
-                                            class="calendar minus outline icon"></i>取消收藏</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="ui bottom attached segment">
-                    <div class="ui middle aligned two column grid">
-                        <div class="column">
-                            <a class="ui primary basic button" th:href="@{/user/mysave(page=${page.prePage})}">上一页</a>
-                        </div>
-                        <div class="right aligned column">
-                            <a class="ui primary basic button" th:href="@{/user/mysave(page=${page.nextPage})}">下一页</a>
-                        </div>
+            </div>
+            <div class="ui attached segment">
+                <div class="ui padded vertical segment m-padded-tb-large" th:each="comment,iterStat : ${page.list}">
+                    <div class="ui middle aligned mobile reversed stackable grid">
+                        <span>评论</span>
+                        <span th:text="${comment.content}"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span th:text="${#dates.format(comment.createTime,'yyyy-MM-dd')}">新的留言</span>
+                        <div th:text="${comment.state == 0} ? '未审核':(${comment.state}=='1'?'已展示':'审核未通过')"></div>
                     </div>
                 </div>
             </div>
+            <div class="ui bottom attached segment">
+                <div class="ui middle aligned two column grid">
+                    <div class="column">
+                        <a th:href="@{/user/comment(page=${page.prePage})}" class="item">上一页</a> &nbsp;&nbsp;
+                    </div>
+                    <div class="right aligned column">
+                        <a th:href="@{/user/comment(page=${page.nextPage})}" class="item">下一页</a>&nbsp;&nbsp;
+                    </div>
+                </div>
+            </div>
+        </div>
             <div class="five wide column">
                 <div class="ui top attached segment">
                     <div class="ui header">基本资料</div>
@@ -108,8 +94,8 @@
                     <span class="m-margin-top" th:text="${session.user.email}"></span>
                 </div>
             </div>
-        </div>
     </div>
+</div>
 </div>
 
 <!--底部footer-->

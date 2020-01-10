@@ -143,4 +143,12 @@ public class CommentService {
         }
         return x;
     }
+
+    public  PageInfo<Comment> queryComment(String nickname) {
+        CommentExample example = new CommentExample();
+        example.createCriteria().andNicknameEqualTo(nickname);
+        List<Comment> list = commentMapper.selectByExample(example);
+        PageInfo<Comment> pageInfo = new PageInfo<>(list);
+        return pageInfo;
+     }
 }
